@@ -8,11 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class BankrollItem {
+public class BankrollItem implements Serializable{
 
     // todo: сиквенсы? плюс в других энтити
     @Id
