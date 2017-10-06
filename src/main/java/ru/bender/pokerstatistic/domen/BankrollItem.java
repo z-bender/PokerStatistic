@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class BankrollItem implements Serializable{
+public class BankrollItem implements Serializable {
 
     // todo: сиквенсы? плюс в других энтити
     @Id
@@ -40,7 +40,7 @@ public class BankrollItem implements Serializable{
         CONVERT_BONUS("Бонусы"),
         OTHER("Другое");
 
-        private String description;
+        private final String description;
 
         Type(String description) {
             this.description = description;

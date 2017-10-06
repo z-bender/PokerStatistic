@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Player implements Serializable{
+public class Player implements Serializable {
 
     @Id
     private Integer id;
