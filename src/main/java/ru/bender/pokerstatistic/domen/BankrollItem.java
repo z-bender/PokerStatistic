@@ -19,8 +19,7 @@ public class BankrollItem implements Serializable {
     @Id
     private Integer id;
     @Column(nullable = false)
-    // todo: переименовать? можно ли использовать date в БД?
-    private LocalDateTime date;
+    private LocalDateTime dateTime;
     @Column(nullable = false)
     private Integer money;
     @Column(nullable = false)
