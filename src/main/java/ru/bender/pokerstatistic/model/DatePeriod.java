@@ -1,8 +1,7 @@
-package ru.bender.pokerstatistic.dto;
+package ru.bender.pokerstatistic.model;
 
 import java.time.LocalDate;
 
-// todo: dto?
 public class DatePeriod {
 
     public LocalDate start;

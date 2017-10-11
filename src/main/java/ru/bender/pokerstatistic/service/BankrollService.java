@@ -2,8 +2,8 @@ package ru.bender.pokerstatistic.service;
 
 import ru.bender.pokerstatistic.domen.BankrollItem;
 import ru.bender.pokerstatistic.domen.BankrollItem.Type;
-import ru.bender.pokerstatistic.dto.DatePeriod;
-import ru.bender.pokerstatistic.dto.PeriodResult;
+import ru.bender.pokerstatistic.model.DatePeriod;
+import ru.bender.pokerstatistic.model.PeriodResult;
 
 import java.time.LocalDateTime;
 import java.util.List;

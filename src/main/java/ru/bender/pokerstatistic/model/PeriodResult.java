@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.dto;
+package ru.bender.pokerstatistic.model;
 
 public class PeriodResult {
 
