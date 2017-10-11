@@ -15,10 +15,6 @@ import static java.time.LocalDate.of;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
-import static ru.bender.pokerstatistic.testing.TestUtils.assertCollectionsEquals;
-import static ru.bender.pokerstatistic.testing.TestUtils.endOfDay;
-import static ru.bender.pokerstatistic.testing.TestUtils.getDateTimeAfterPeriod;
-import static ru.bender.pokerstatistic.testing.TestUtils.getDateTimeBeforePeriod;
 
 @UnitTest
 public class BankrollServiceTest extends AbstractTest {
