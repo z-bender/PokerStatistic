@@ -3,6 +3,7 @@ package ru.bender.pokerstatistic.bankroll;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -10,7 +11,13 @@ import java.time.LocalDateTime;
 public class BankrollServiceImpl implements BankrollService {
 
     @Override
-    public void addItem(LocalDateTime date, BankrollItem.Type type, int money, int points, String comment) {
+    public BankrollItem addItem(LocalDate date, int money, int points, BankrollItem.Type type, String comment) {
+        return null;
+    }
+
+    @Override
+    public BankrollItem addItem(BankrollItem.Type type, int money, int points, String comment) {
+        return null;
     }
 
     @Override

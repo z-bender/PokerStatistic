@@ -31,6 +31,22 @@ public class BankrollItem implements Serializable {
     private String comment;
     // TODO: gameTypes
 
+    public BankrollItem() {
+    }
+
+    private BankrollItem(LocalDateTime dateTime, Integer money, Integer points, Type type, String comment) {
+        this.dateTime = dateTime;
+        this.money = money;
+        this.points = points;
+        this.type = type;
+        this.comment = comment;
+    }
+
+    public static BankrollItem newItem(LocalDateTime dateTime, Integer money, Integer points,
+                                       Type type, String comment) {
+        return new BankrollItem(dateTime, money, points, type, comment);
+    }
+
     @Getter
     public enum Type {
         GAME("Игра"),

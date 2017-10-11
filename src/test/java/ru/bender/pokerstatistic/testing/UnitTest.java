@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.testing.configs;
+package ru.bender.pokerstatistic.testing;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
