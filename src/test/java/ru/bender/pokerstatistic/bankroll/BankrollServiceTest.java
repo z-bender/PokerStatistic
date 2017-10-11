@@ -12,12 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDate.of;
-import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
+import static org.testng.Assert.assertEquals;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 
 @UnitTest
 public class BankrollServiceTest extends AbstractTest {
+
+    private final static int IRRELEVANT_VALUE = 500;
 
     @Autowired
     private BankrollService service;
@@ -31,18 +33,23 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
+    public void addItemForDate() {
+        throw new NotImplementedException();
+    }
+
+    @Test
     public void testGetPeriodItems() {
         DatePeriod period = new DatePeriod(
                 of(2017, 2, 2),
                 of(2017, 2, 10)
         );
-        addNewItem(getDateTimeBeforePeriod(period), 500, 300, GAME);
-        addNewItem(getDateTimeAfterPeriod(period), 800, 320, DEPOSIT);
+        addNewItem(getDateTimeBeforePeriod(period));
+        addNewItem(getDateTimeAfterPeriod(period));
         List<BankrollItem> expected = new ArrayList<>();
-        expected.add(addNewItem(period.start.atStartOfDay(), 600, 310, GAME));
-        expected.add(addNewItem(period.start.atStartOfDay(), 620, 315, GAME));
-        expected.add(addNewItem(period.start.plusDays(1).atTime(13,13,13), 620, 315, GAME));
-        expected.add(addNewItem(endOfDay(period.end), 620, 315, GAME));
+        expected.add(addNewItem(period.start.atStartOfDay()));
+        expected.add(addNewItem(period.start.atStartOfDay()));
+        expected.add(addNewItem(period.start.plusDays(1).atTime(13,13,13)));
+        expected.add(addNewItem(endOfDay(period.end)));
 
         List<BankrollItem> actual = service.getPeriodItems(period).getItems();
 
@@ -53,8 +60,21 @@ public class BankrollServiceTest extends AbstractTest {
         return dao.save(newItem(dateTime, money, points, type, null));
     }
 
+    private BankrollItem addNewItem(LocalDateTime dateTime) {
+        return addNewItem(dateTime, IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME);
+    }
+
     @Test
     public void testGetLastItem() {
+        LocalDateTime now = LocalDateTime.now();
+        addNewItem(now.minusDays(5));
+        BankrollItem expected = addNewItem(now.minusDays(5).plusSeconds(1));
+        addNewItem(now.minusDays(10));
+        assertEquals(service.getLastItem(), expected);
+    }
+
+    @Test
+    public void testGetLastItemByDate() {
         throw new NotImplementedException();
     }
 

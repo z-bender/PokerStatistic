@@ -4,14 +4,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Service
 @Transactional
 public class BankrollServiceImpl implements BankrollService {
 
     @Override
-    public BankrollItem addItem(LocalDate date, int money, int points, BankrollItem.Type type, String comment) {
+    public BankrollItem addItemForDate(LocalDate date, int money, int points, BankrollItem.Type type, String comment) {
         return null;
     }
 
@@ -26,8 +25,12 @@ public class BankrollServiceImpl implements BankrollService {
     }
 
     @Override
-    public BankrollItem getLastItem(LocalDateTime dateTime) {
+    public BankrollItem getLastItemByDate(LocalDate date) {
         return null;
     }
 
+    @Override
+    public BankrollItem getLastItem() {
+        return null;
+    }
 }
