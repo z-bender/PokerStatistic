@@ -3,14 +3,15 @@ package ru.bender.pokerstatistic.bankroll;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
+import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.time.LocalDate.of;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
@@ -20,16 +21,13 @@ import static ru.bender.pokerstatistic.testing.TestUtils.getDateTimeAfterPeriod;
 import static ru.bender.pokerstatistic.testing.TestUtils.getDateTimeBeforePeriod;
 
 @UnitTest
-public class BankrollServiceTest {
-
-    private final BankrollService service;
-    private final BankrollItemDao dao;
+public class BankrollServiceTest extends AbstractTest {
 
     @Autowired
-    public BankrollServiceTest(BankrollService bankrollService, BankrollItemDao dao) {
-        this.service = bankrollService;
-        this.dao = dao;
-    }
+    private BankrollService service;
+    @Autowired
+    private BankrollItemDao dao;
+
 
     @Test
     public void testAddItem() {
@@ -39,8 +37,8 @@ public class BankrollServiceTest {
     @Test
     public void testGetPeriodItems() {
         DatePeriod period = new DatePeriod(
-                LocalDate.of(2, 2, 2017), 
-                LocalDate.of(10, 2, 2017)
+                of(2017, 2, 2),
+                of(2017, 2, 10)
         );
         addNewItem(getDateTimeBeforePeriod(period), 500, 300, GAME);
         addNewItem(getDateTimeAfterPeriod(period), 800, 320, DEPOSIT);
