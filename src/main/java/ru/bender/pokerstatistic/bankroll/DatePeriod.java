@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.model;
+package ru.bender.pokerstatistic.bankroll;
 
 import java.time.LocalDate;
 

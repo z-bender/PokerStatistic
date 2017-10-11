@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.domen;
+package ru.bender.pokerstatistic.bankroll;
 
 import lombok.Data;
 import lombok.Getter;

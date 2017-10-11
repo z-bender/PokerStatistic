@@ -1,6 +1,4 @@
-package ru.bender.pokerstatistic.model;
-
-import ru.bender.pokerstatistic.domen.BankrollItem;
+package ru.bender.pokerstatistic.bankroll;
 
 import java.util.List;
 

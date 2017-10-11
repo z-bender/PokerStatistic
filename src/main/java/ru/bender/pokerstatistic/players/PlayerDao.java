@@ -1,7 +1,6 @@
-package ru.bender.pokerstatistic.dao;
+package ru.bender.pokerstatistic.players;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.bender.pokerstatistic.domen.Player;
 
 public interface PlayerDao extends CrudRepository<Player, Integer> {
 }

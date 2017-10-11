@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.web;
+package ru.bender.pokerstatistic.players;
 
 public class PlayerControllerImpl implements PlayerController {
 }

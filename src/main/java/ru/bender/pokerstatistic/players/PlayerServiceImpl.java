@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.service;
+package ru.bender.pokerstatistic.players;
 
 public class PlayerServiceImpl implements PlayerService {
 }
