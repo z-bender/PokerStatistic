@@ -7,4 +7,8 @@ public class BankrollOfPeriod {
     private List<BankrollItem> items;
     private DatePeriod period;
 
+    private PeriodResult getPeriodResult() {
+        return null;
+    }
+
 }

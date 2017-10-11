@@ -48,12 +48,29 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-	</dependencies>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.196</version>
+			<scope>test</scope>
+		</dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>6.11</version>
+			<scope>test</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<outputDirectory>target</outputDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+			</testResource>
+		</testResources>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
