@@ -6,7 +6,7 @@ import ru.bender.pokerstatistic.utils.DatePeriod;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public interface BankrollService {
+interface BankrollService {
 
     LocalTime TIME_FOR_NEW_ITEM_FROM_PAST_DAY = LocalTime.of(12, 0);
 

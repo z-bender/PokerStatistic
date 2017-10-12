@@ -24,6 +24,7 @@ import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.OTHER;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.WITHDRAWAL;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 import static ru.bender.pokerstatistic.bankroll.BankrollService.TIME_FOR_NEW_ITEM_FROM_PAST_DAY;
+import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 
 @UnitTest
 public class BankrollServiceTest extends AbstractTest {

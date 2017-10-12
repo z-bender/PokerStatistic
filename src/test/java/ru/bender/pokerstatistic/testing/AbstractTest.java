@@ -4,12 +4,12 @@ package ru.bender.pokerstatistic.testing;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 
 import static java.lang.System.lineSeparator;
 import static org.testng.Assert.assertTrue;
+import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 
 public class AbstractTest extends AbstractTransactionalTestNGSpringContextTests {
 
@@ -19,10 +19,6 @@ public class AbstractTest extends AbstractTransactionalTestNGSpringContextTests 
                 "Failed collections equals" + lineSeparator() +
                         "Actual: " + actual + lineSeparator() +
                         "Expected: " + expected);
-    }
-
-    protected static LocalDateTime endOfDay(LocalDate date) {
-        return date.atTime(23, 59, 59);
     }
 
     protected static LocalDateTime getDateTimeBeforePeriod(DatePeriod period) {
