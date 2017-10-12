@@ -13,7 +13,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-public class Player implements Serializable {
+class Player implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

@@ -6,5 +6,5 @@ import javax.transaction.Transactional;
 
 @Service
 @Transactional
-public class PlayerServiceImpl implements PlayerService {
+class PlayerServiceImpl implements PlayerService {
 }

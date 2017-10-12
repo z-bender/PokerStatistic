@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-public class BankrollItem implements Serializable {
+class BankrollItem implements Serializable {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)

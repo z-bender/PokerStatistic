@@ -1,9 +1,11 @@
 package ru.bender.pokerstatistic.bankroll;
 
+import ru.bender.pokerstatistic.utils.DatePeriod;
+
 import java.util.Collections;
 import java.util.List;
 
-public class BankrollOfPeriod {
+class BankrollOfPeriod {
 
     private List<BankrollItem> sortedByDateItems;
     private DatePeriod period;

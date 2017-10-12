@@ -1,4 +1,4 @@
-package ru.bender.pokerstatistic.bankroll;
+package ru.bender.pokerstatistic.utils;
 
 import lombok.AllArgsConstructor;
 

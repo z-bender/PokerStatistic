@@ -1,6 +1,8 @@
 package ru.bender.pokerstatistic.bankroll;
 
-public class PeriodResult {
+import ru.bender.pokerstatistic.utils.DatePeriod;
+
+class PeriodResult {
 
     private Integer moneyAtStart;
     private Integer moneyAtEnd;

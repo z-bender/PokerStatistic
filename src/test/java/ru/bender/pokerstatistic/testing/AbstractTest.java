@@ -1,6 +1,7 @@
 package ru.bender.pokerstatistic.testing;
 
-import ru.bender.pokerstatistic.bankroll.DatePeriod;
+
+import ru.bender.pokerstatistic.utils.DatePeriod;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
