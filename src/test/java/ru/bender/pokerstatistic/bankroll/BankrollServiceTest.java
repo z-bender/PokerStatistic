@@ -86,12 +86,6 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test(expectedExceptions = ExistFutureItemException.class)
-    public void addWithExistingFewDaysFutureItem() throws ExistFutureItemException {
-        addNewItem(LocalDateTime.now().plusDays(5));
-        service.addItem(IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
-    }
-
-    @Test(expectedExceptions = ExistFutureItemException.class)
     public void addForDateWithExistingTodayItem() throws Exception {
         LocalDateTime now = LocalDateTime.now();
         addNewItem(now);
