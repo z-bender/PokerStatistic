@@ -15,7 +15,7 @@ public class BankrollServiceImpl implements BankrollService {
     }
 
     @Override
-    public BankrollItem addItem(BankrollItem.Type type, int money, int points, String comment) {
+    public BankrollItem addItem(int money, int points, BankrollItem.Type type, String comment) {
         return null;
     }
 

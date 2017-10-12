@@ -20,7 +20,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
+import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.OTHER;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
+import static ru.bender.pokerstatistic.bankroll.BankrollService.TIME_FOR_NEW_ITEM_FROM_PAST_DAY;
 
 @UnitTest
 public class BankrollServiceTest extends AbstractTest {
@@ -37,9 +39,11 @@ public class BankrollServiceTest extends AbstractTest {
     public void addItem() {
         final int money = 300;
         final int points = 400;
-        final String comment = "Just comment";
         final Type type = DEPOSIT;
-        BankrollItem newItem = service.addItem(type, money, points, comment);
+        final String comment = "Just comment";
+
+        BankrollItem newItem = service.addItem(money, points, type, comment);
+
         assertNotNull(newItem.getType());
         assertEquals(newItem.getType(), type);
         assertEquals(newItem.getMoney().intValue(), money);
@@ -53,17 +57,43 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
+    public void addItemForDate() {
+        LocalDate date = LocalDate.now().minusDays(5);
+        final int money = 300;
+        final int points = 400;
+        final Type type = DEPOSIT;
+        final String comment = "Just comment";
+
+        BankrollItem newItem = service.addItemForDate(date, money, points, type, comment);
+
+        assertNotNull(newItem.getType());
+        assertEquals(newItem.getType(), type);
+        assertEquals(newItem.getMoney().intValue(), money);
+        assertEquals(newItem.getPoints().intValue(), points);
+        assertEquals(newItem.getComment(), comment);
+        assertEquals(newItem.getDateTime(), date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY));
+    }
+
+    @Test
+    public void addNotFirstItemForDate() {
+        LocalDate date = LocalDate.now().minusDays(7);
+
+        BankrollItem itemAtStartOfDay = addNewItem(date.atTime(0, 0));
+        BankrollItem newItem1 = service.addItemForDate(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, DEPOSIT, null);
+        assertEquals(service.getLastItemByDate(date), newItem1);
+
+        BankrollItem itemAtEndOfDay = addNewItem(date.atTime(23, 59));
+        BankrollItem newItem2 = service.addItemForDate(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, OTHER, null);
+        assertEquals(service.getLastItemByDate(date), newItem2);
+    }
+
+    @Test
     public void addItemNotLastException() {
         throw new NotImplementedException();
     }
 
     @Test
     public void addItemForDateNotLastException() {
-        throw new NotImplementedException();
-    }
-
-    @Test
-    public void addItemForDate() {
         throw new NotImplementedException();
     }
 

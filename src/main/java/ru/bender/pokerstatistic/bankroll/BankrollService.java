@@ -3,12 +3,15 @@ package ru.bender.pokerstatistic.bankroll;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public interface BankrollService {
 
+    LocalTime TIME_FOR_NEW_ITEM_FROM_PAST_DAY = LocalTime.of(12, 0);
+
     BankrollItem addItemForDate(LocalDate date, int money, int points, Type type, String comment);
 
-    BankrollItem addItem(Type type, int money, int points, String comment);
+    BankrollItem addItem(int money, int points, Type type, String comment);
 
     BankrollOfPeriod getPeriodItems(DatePeriod period);
 
