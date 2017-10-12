@@ -1,9 +1,11 @@
 package ru.bender.pokerstatistic.bankroll;
 
+import java.time.LocalDate;
+
 class ExistFutureItemException extends Exception {
 
-    public ExistFutureItemException(BankrollItem newItem, BankrollItem existItem) {
-        super(String.format("Error create new item - %s, because exist later item - %s", newItem, existItem));
+    public ExistFutureItemException(LocalDate date, BankrollItem existingItem) {
+        super(String.format("Error adding item at %s. Exist later item - %s.", date, existingItem));
     }
 
 }

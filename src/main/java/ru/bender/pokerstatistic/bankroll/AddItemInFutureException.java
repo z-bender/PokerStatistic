@@ -1,9 +1,11 @@
 package ru.bender.pokerstatistic.bankroll;
 
+import java.time.LocalDate;
+
 class AddItemInFutureException extends Exception {
 
-    public AddItemInFutureException(BankrollItem bankrollItem) {
-        super("Bankroll item can not be in the future - " + bankrollItem);
+    public AddItemInFutureException(LocalDate futureDate) {
+        super("Bankroll item can not be in the future - " + futureDate);
     }
 
 }
