@@ -7,12 +7,18 @@ import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDate.of;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
+import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 
@@ -28,7 +34,31 @@ public class BankrollServiceTest extends AbstractTest {
 
 
     @Test
-    public void testAddItem() {
+    public void addItem() {
+        final int money = 300;
+        final int points = 400;
+        final String comment = "Just comment";
+        final Type type = DEPOSIT;
+        BankrollItem newItem = service.addItem(type, money, points, comment);
+        assertNotNull(newItem.getType());
+        assertEquals(newItem.getType(), type);
+        assertEquals(newItem.getMoney().intValue(), money);
+        assertEquals(newItem.getPoints().intValue(), points);
+        assertEquals(newItem.getComment(), comment);
+        assertDateTimeInFiveSecondsFromNow(newItem);
+    }
+
+    private void assertDateTimeInFiveSecondsFromNow(BankrollItem newItem) {
+        assertThat(ChronoUnit.SECONDS.between(newItem.getDateTime(), LocalDateTime.now()), lessThan(5L));
+    }
+
+    @Test
+    public void addItemNotLastException() {
+        throw new NotImplementedException();
+    }
+
+    @Test
+    public void addItemForDateNotLastException() {
         throw new NotImplementedException();
     }
 
@@ -38,7 +68,7 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
-    public void testGetPeriodItems() {
+    public void getPeriodItems() {
         DatePeriod period = new DatePeriod(
                 of(2017, 2, 2),
                 of(2017, 2, 10)
@@ -65,17 +95,38 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
-    public void testGetLastItem() {
+    public void getLastItem() {
         LocalDateTime now = LocalDateTime.now();
+        addNewItem(now.minusDays(6).plusMinutes(10));
         addNewItem(now.minusDays(5));
-        BankrollItem expected = addNewItem(now.minusDays(5).plusSeconds(1));
-        addNewItem(now.minusDays(10));
-        assertEquals(service.getLastItem(), expected);
+        BankrollItem lastItemFewDaysAgo = addNewItem(now.minusDays(5).plusSeconds(1));
+        assertEquals(service.getLastItem(), lastItemFewDaysAgo);
+
+        BankrollItem lastItemToday = addNewItem(now);
+        assertEquals(service.getLastItem(), lastItemToday);
     }
 
     @Test
-    public void testGetLastItemByDate() {
-        throw new NotImplementedException();
+    public void getLastItemByDate() {
+        LocalDate date = LocalDate.now().minusDays(6);
+        addNewItem(date.minusDays(1).atStartOfDay());
+        addNewItem(date.atStartOfDay());
+        addNewItem(date.atTime(13,22));
+        BankrollItem expected = addNewItem(date.atTime(13, 22, 1));
+        addNewItem(date.plusDays(1).atStartOfDay());
+        addNewItem(LocalDateTime.now());
+
+        assertEquals(service.getLastItemByDate(date), expected);
+    }
+
+    @Test
+    public void getLastItemByDateAtAnotherDay() {
+        LocalDate date = LocalDate.now().minusDays(10);
+        addNewItem(endOfDay(date.minusDays(5)));
+        addNewItem(date.minusDays(4).atStartOfDay());
+        addNewItem(date.minusDays(4).atTime(18,33));
+        addNewItem(date.minusDays(4).atTime(18,33,1));
+        addNewItem(date.plusDays(1).atStartOfDay());
     }
 
 }
