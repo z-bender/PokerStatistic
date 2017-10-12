@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static java.util.Objects.nonNull;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
@@ -47,10 +48,16 @@ class BankrollServiceImpl implements BankrollService {
         checkThatDateIsNotToday(date);
         checkThatDateIsNotAFuture(date);
         checkThatNotExistItemWithLaterDate(date);
-        final LocalDateTime lastItemDateTime = getLastItemByDate(date).getDateTime();
-        return lastItemDateTime.isBefore(date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY)) ?
-                date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY) : lastItemDateTime.plusSeconds(1);
+        final LocalDateTime lastItemDateTime = getLastItemByDateDateTime(date);
+        // todo: exclude to method for commenting
+        return nonNull(lastItemDateTime) && !lastItemDateTime.isBefore(date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY)) ?
+                lastItemDateTime.plusSeconds(1) : date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY);
 
+    }
+
+    private LocalDateTime getLastItemByDateDateTime(LocalDate date) {
+        final BankrollItem lastItem = getLastItemByDate(date);
+        return lastItem != null ? lastItem.getDateTime() : null;
     }
 
     private void checkThatDateIsNotToday(LocalDate date) throws AddItemForTodayException {
@@ -67,7 +74,7 @@ class BankrollServiceImpl implements BankrollService {
 
     private void checkThatNotExistItemWithLaterDate(LocalDate date) throws ExistFutureItemException {
         final BankrollItem lastItem = getLastItem();
-        if (lastItem.getDateTime().toLocalDate().isAfter(date)) {
+        if (nonNull(lastItem) && lastItem.getDateTime().toLocalDate().isAfter(date)) {
             throw new ExistFutureItemException(date, lastItem);
         }
     }
