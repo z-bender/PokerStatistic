@@ -37,7 +37,7 @@ public class BankrollServiceTest extends AbstractTest {
 
 
     @Test
-    public void addItem() throws Exception {
+    public void addItem() {
         final int money = 300;
         final int points = 400;
         final Type type = DEPOSIT;
@@ -82,12 +82,6 @@ public class BankrollServiceTest extends AbstractTest {
         BankrollItem itemAtEndOfDay = addNewItem(date.atTime(23, 59));
         BankrollItem newItem2 = service.addItemForDate(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, OTHER, null);
         assertEquals(service.getLastItemByDate(date), newItem2);
-    }
-
-    @Test(expectedExceptions = ExistFutureItemException.class)
-    public void addWithExistingFutureTodayItem() throws ExistFutureItemException {
-        addNewItem(LocalDateTime.now().plusMinutes(1));
-        service.addItem(IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
     }
 
     @Test(expectedExceptions = ExistFutureItemException.class)
@@ -167,11 +161,13 @@ public class BankrollServiceTest extends AbstractTest {
     @Test
     public void getLastItemByDateAtAnotherDay() {
         LocalDate date = LocalDate.now().minusDays(10);
-        addNewItem(endOfDay(date.minusDays(5)));
-        addNewItem(date.minusDays(4).atStartOfDay());
-        addNewItem(date.minusDays(4).atTime(18, 33));
-        addNewItem(date.minusDays(4).atTime(18, 33, 1));
+        addNewItem(endOfDay(date.minusDays(1)));
+        addNewItem(date.atStartOfDay());
+        addNewItem(date.atTime(18, 33));
+        BankrollItem expected = addNewItem(date.atTime(18, 33, 1));
         addNewItem(date.plusDays(1).atStartOfDay());
+
+        assertEquals(service.getLastItemByDate(date), expected);
     }
 
     private BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, Type type) {

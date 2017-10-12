@@ -1,6 +1,7 @@
 package ru.bender.pokerstatistic.testing;
 
 
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.util.Collection;
 import static java.lang.System.lineSeparator;
 import static org.testng.Assert.assertTrue;
 
-public class AbstractTest {
+public class AbstractTest extends AbstractTransactionalTestNGSpringContextTests {
 
     protected static void assertCollectionsEquals(Collection actual, Collection expected) {
         boolean equals = actual.size() == expected.size() && actual.containsAll(expected);
