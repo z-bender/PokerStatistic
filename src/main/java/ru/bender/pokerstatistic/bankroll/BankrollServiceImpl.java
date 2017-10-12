@@ -11,12 +11,14 @@ import java.time.LocalDate;
 class BankrollServiceImpl implements BankrollService {
 
     @Override
-    public BankrollItem addItemForDate(LocalDate date, int money, int points, BankrollItem.Type type, String comment) {
+    public BankrollItem addItemForDate(LocalDate date, int money, int points, BankrollItem.Type type, String comment)
+            throws ExistFutureItemException, AddItemForTodayException, AddItemInFutureException {
         return null;
     }
 
     @Override
-    public BankrollItem addItem(int money, int points, BankrollItem.Type type, String comment) {
+    public BankrollItem addItem(int money, int points, BankrollItem.Type type, String comment)
+            throws ExistFutureItemException {
         return null;
     }
 

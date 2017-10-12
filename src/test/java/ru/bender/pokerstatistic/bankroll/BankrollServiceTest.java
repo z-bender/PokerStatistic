@@ -6,7 +6,6 @@ import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import ru.bender.pokerstatistic.utils.DatePeriod;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,6 +21,7 @@ import static org.testng.Assert.assertNotNull;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.OTHER;
+import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.WITHDRAWAL;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 import static ru.bender.pokerstatistic.bankroll.BankrollService.TIME_FOR_NEW_ITEM_FROM_PAST_DAY;
 
@@ -37,7 +37,7 @@ public class BankrollServiceTest extends AbstractTest {
 
 
     @Test
-    public void addItem() {
+    public void addItem() throws Exception {
         final int money = 300;
         final int points = 400;
         final Type type = DEPOSIT;
@@ -53,12 +53,8 @@ public class BankrollServiceTest extends AbstractTest {
         assertDateTimeInFiveSecondsFromNow(newItem);
     }
 
-    private void assertDateTimeInFiveSecondsFromNow(BankrollItem newItem) {
-        assertThat(ChronoUnit.SECONDS.between(newItem.getDateTime(), LocalDateTime.now()), lessThan(5L));
-    }
-
     @Test
-    public void addItemForDate() {
+    public void addItemForDate() throws Exception {
         LocalDate date = LocalDate.now().minusDays(5);
         final int money = 300;
         final int points = 400;
@@ -76,7 +72,7 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
-    public void addNotFirstItemForDate() {
+    public void addNotFirstItemForDate() throws Exception {
         LocalDate date = LocalDate.now().minusDays(7);
 
         BankrollItem itemAtStartOfDay = addNewItem(date.atTime(0, 0));
@@ -88,14 +84,40 @@ public class BankrollServiceTest extends AbstractTest {
         assertEquals(service.getLastItemByDate(date), newItem2);
     }
 
-    @Test
-    public void addItemNotLastException() {
-        throw new NotImplementedException();
+    @Test(expectedExceptions = ExistFutureItemException.class)
+    public void addWithExistingFutureTodayItem() throws ExistFutureItemException {
+        addNewItem(LocalDateTime.now().plusMinutes(1));
+        service.addItem(IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
     }
 
-    @Test
-    public void addItemForDateNotLastException() {
-        throw new NotImplementedException();
+    @Test(expectedExceptions = ExistFutureItemException.class)
+    public void addWithExistingFewDaysFutureItem() throws ExistFutureItemException {
+        addNewItem(LocalDateTime.now().plusDays(5));
+        service.addItem(IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
+    }
+
+    @Test(expectedExceptions = ExistFutureItemException.class)
+    public void addForDateWithExistingTodayItem() throws Exception {
+        LocalDateTime now = LocalDateTime.now();
+        addNewItem(now);
+        service.addItemForDate(now.minusDays(1).toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
+    }
+
+    @Test(expectedExceptions = ExistFutureItemException.class)
+    public void addForDateWithExistingFutureItem() throws Exception {
+        LocalDateTime date = LocalDateTime.now().minusDays(5);
+        addNewItem(date.plusDays(1));
+        service.addItemForDate(date.toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
+    }
+
+    @Test(expectedExceptions = AddItemForTodayException.class)
+    public void addItemForDateToday() throws Exception {
+        service.addItemForDate(LocalDate.now(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, DEPOSIT, null);
+    }
+
+    @Test(expectedExceptions = AddItemInFutureException.class)
+    public void addItemForDateInFuture() throws Exception {
+        service.addItemForDate(LocalDate.now().plusDays(1), IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
     }
 
     @Test
@@ -109,20 +131,12 @@ public class BankrollServiceTest extends AbstractTest {
         List<BankrollItem> expected = new ArrayList<>();
         expected.add(addNewItem(period.start.atStartOfDay()));
         expected.add(addNewItem(period.start.atStartOfDay()));
-        expected.add(addNewItem(period.start.plusDays(1).atTime(13,13,13)));
+        expected.add(addNewItem(period.start.plusDays(1).atTime(13, 13, 13)));
         expected.add(addNewItem(endOfDay(period.end)));
 
         List<BankrollItem> actual = service.getPeriodItems(period).getItems();
 
         assertCollectionsEquals(actual, expected);
-    }
-
-    private BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, Type type) {
-        return dao.save(newItem(dateTime, money, points, type, null));
-    }
-
-    private BankrollItem addNewItem(LocalDateTime dateTime) {
-        return addNewItem(dateTime, IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME);
     }
 
     @Test
@@ -142,7 +156,7 @@ public class BankrollServiceTest extends AbstractTest {
         LocalDate date = LocalDate.now().minusDays(6);
         addNewItem(date.minusDays(1).atStartOfDay());
         addNewItem(date.atStartOfDay());
-        addNewItem(date.atTime(13,22));
+        addNewItem(date.atTime(13, 22));
         BankrollItem expected = addNewItem(date.atTime(13, 22, 1));
         addNewItem(date.plusDays(1).atStartOfDay());
         addNewItem(LocalDateTime.now());
@@ -155,9 +169,21 @@ public class BankrollServiceTest extends AbstractTest {
         LocalDate date = LocalDate.now().minusDays(10);
         addNewItem(endOfDay(date.minusDays(5)));
         addNewItem(date.minusDays(4).atStartOfDay());
-        addNewItem(date.minusDays(4).atTime(18,33));
-        addNewItem(date.minusDays(4).atTime(18,33,1));
+        addNewItem(date.minusDays(4).atTime(18, 33));
+        addNewItem(date.minusDays(4).atTime(18, 33, 1));
         addNewItem(date.plusDays(1).atStartOfDay());
+    }
+
+    private BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, Type type) {
+        return dao.save(newItem(dateTime, money, points, type, null));
+    }
+
+    private BankrollItem addNewItem(LocalDateTime dateTime) {
+        return addNewItem(dateTime, IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME);
+    }
+
+    private void assertDateTimeInFiveSecondsFromNow(BankrollItem newItem) {
+        assertThat(ChronoUnit.SECONDS.between(newItem.getDateTime(), LocalDateTime.now()), lessThan(5L));
     }
 
 }
