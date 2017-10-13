@@ -15,7 +15,7 @@ interface BankrollService {
     BankrollItem addItemForDate(LocalDate date, int money, int points, Type type, String comment)
     throws ExistFutureItemException, AddItemForTodayException, AddItemInFutureException;
 
-    BankrollOfPeriod getPeriodItems(DatePeriod period);
+    BankrollOfPeriod getPeriodItems(DatePeriod period) throws ItemsNotExistInPeriodException;
 
     BankrollItem getLastItemByDate(LocalDate date);
 

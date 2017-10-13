@@ -7,8 +7,10 @@ import ru.bender.pokerstatistic.utils.DatePeriod;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static java.util.Objects.nonNull;
+import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
 @Service
@@ -80,8 +82,13 @@ class BankrollServiceImpl implements BankrollService {
     }
 
     @Override
-    public BankrollOfPeriod getPeriodItems(DatePeriod period) {
-        return null;
+    public BankrollOfPeriod getPeriodItems(DatePeriod period) throws ItemsNotExistInPeriodException {
+        List<BankrollItem> items = dao.findAllByDateTimeBetween(period.start.atStartOfDay(), endOfDay(period.end));
+        if (items.isEmpty()) {
+            throw new ItemsNotExistInPeriodException();
+        }
+        BankrollItem lastItemBeforePeriod = getLastItemByDate(period.start.minusDays(1));
+        return new BankrollOfPeriod(items, lastItemBeforePeriod, period);
     }
 
     @Override

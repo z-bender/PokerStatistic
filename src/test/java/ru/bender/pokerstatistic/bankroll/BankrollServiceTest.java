@@ -6,6 +6,7 @@ import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import ru.bender.pokerstatistic.utils.DatePeriod;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -110,7 +111,7 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
-    public void getPeriodItems() {
+    public void getPeriodItems() throws ItemsNotExistInPeriodException {
         DatePeriod period = new DatePeriod(
                 of(2017, 2, 2),
                 of(2017, 2, 10)
@@ -126,6 +127,11 @@ public class BankrollServiceTest extends AbstractTest {
         List<BankrollItem> actual = service.getPeriodItems(period).getItems();
 
         assertCollectionsEquals(actual, expected);
+    }
+
+    @Test
+    public void notExistItemsInPeriod() {
+        throw new NotImplementedException();
     }
 
     @Test
