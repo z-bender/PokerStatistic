@@ -47,14 +47,15 @@ class BankrollServiceImpl implements BankrollService {
         checkThatDateIsNotToday(date);
         checkThatDateIsNotAFuture(date);
         checkThatNotExistItemWithLaterDate(date);
-        final LocalDateTime lastItemDateTime = getLastItemByDateDateTime(date);
-        // todo: exclude to method for commenting
-        return nonNull(lastItemDateTime) && !lastItemDateTime.isBefore(date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY)) ?
+        LocalDateTime lastItemDateTime = getLastItemDateTimeByDate(date);
+        boolean isLastItemAfterDefaultTimeOfNewItem =
+                nonNull(lastItemDateTime) && !lastItemDateTime.isBefore(date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY));
+        return isLastItemAfterDefaultTimeOfNewItem ?
                 lastItemDateTime.plusSeconds(1) : date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY);
 
     }
 
-    private LocalDateTime getLastItemByDateDateTime(LocalDate date) {
+    private LocalDateTime getLastItemDateTimeByDate(LocalDate date) {
         final BankrollItem lastItem = getLastItemByDate(date);
         return lastItem != null ? lastItem.getDateTime() : null;
     }

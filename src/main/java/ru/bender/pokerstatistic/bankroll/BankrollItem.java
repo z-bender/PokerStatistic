@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Data
-class BankrollItem implements Serializable {
+class BankrollItem implements Serializable, Comparable<BankrollItem> {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -49,6 +49,12 @@ class BankrollItem implements Serializable {
                                        Type type, String comment) {
         return new BankrollItem(dateTime, money, points, type, comment);
     }
+
+    @Override
+    public int compareTo(BankrollItem otherItem) {
+        return this.dateTime.isAfter(otherItem.dateTime) ? 1 : -1;
+    }
+
 
     @Getter
     public enum Type {
