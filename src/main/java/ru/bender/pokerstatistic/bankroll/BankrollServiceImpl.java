@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static java.util.Objects.nonNull;
-import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
 @Service
@@ -86,7 +85,7 @@ class BankrollServiceImpl implements BankrollService {
 
     @Override
     public BankrollItem getLastItemByDate(LocalDate date) {
-        return dao.findFirstByDateTimeBeforeOrderByDateTimeDesc(endOfDay(date));
+        return dao.findFirstByDateTimeBeforeOrderByDateTimeDesc(date.plusDays(1).atStartOfDay());
     }
 
     @Override
