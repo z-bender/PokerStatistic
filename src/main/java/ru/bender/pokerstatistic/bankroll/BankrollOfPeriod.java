@@ -12,16 +12,20 @@ class BankrollOfPeriod {
 
     private final List<BankrollItem> sortedByDateItems;
     private final DatePeriod period;
+    @Nullable
     private final Integer initialMoney;
+    @Nullable
     private final Integer initialPoints;
 
+
     public BankrollOfPeriod(List<BankrollItem> bankrollItems, @Nullable BankrollItem lastItem, DatePeriod period) {
+        this.period = period;
         Collections.sort(bankrollItems);
         this.sortedByDateItems = Collections.unmodifiableList(bankrollItems);
-        this.initialMoney = nonNull(lastItem) ? lastItem.getMoney() : bankrollItems.get(0).getMoney();
-        this.initialPoints = nonNull(lastItem) ? lastItem.getPoints() : bankrollItems.get(0).getPoints();
-        this.period = period;
+        this.initialMoney = nonNull(lastItem) ? lastItem.getMoney() : getFirstItemMoney();
+        this.initialPoints = nonNull(lastItem) ? lastItem.getPoints() : getFirstItemPoints();
     }
+
 
     private PeriodResult getPeriodResult() {
         return null;
@@ -29,6 +33,14 @@ class BankrollOfPeriod {
 
     public List<BankrollItem> getItems() {
         return sortedByDateItems;
+    }
+
+    private Integer getFirstItemMoney() {
+        return sortedByDateItems.isEmpty() ? null : sortedByDateItems.get(0).getMoney();
+    }
+
+    private Integer getFirstItemPoints() {
+        return sortedByDateItems.isEmpty() ? null : sortedByDateItems.get(0).getPoints();
     }
 
 }

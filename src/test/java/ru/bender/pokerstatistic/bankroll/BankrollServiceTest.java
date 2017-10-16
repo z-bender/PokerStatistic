@@ -6,7 +6,6 @@ import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import ru.bender.pokerstatistic.utils.DatePeriod;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +15,8 @@ import java.util.List;
 
 import static java.time.LocalDate.of;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.lessThan;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
@@ -111,7 +112,7 @@ public class BankrollServiceTest extends AbstractTest {
     }
 
     @Test
-    public void getPeriodItems() throws ItemsNotExistInPeriodException {
+    public void getPeriodItems() {
         DatePeriod period = new DatePeriod(
                 of(2017, 2, 2),
                 of(2017, 2, 10)
@@ -131,7 +132,14 @@ public class BankrollServiceTest extends AbstractTest {
 
     @Test
     public void notExistItemsInPeriod() {
-        throw new NotImplementedException();
+        DatePeriod period = new DatePeriod(
+                of(2017, 2, 2),
+                of(2017, 2, 10)
+        );
+        addNewItem(getDateTimeBeforePeriod(period));
+        addNewItem(getDateTimeAfterPeriod(period));
+
+        assertThat(service.getPeriodItems(period).getItems(), is(empty()));
     }
 
     @Test
