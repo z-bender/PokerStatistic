@@ -1,6 +1,5 @@
 package ru.bender.pokerstatistic.bankroll;
 
-import com.sun.istack.internal.Nullable;
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
 import java.util.Collections;
@@ -12,13 +11,11 @@ class BankrollOfPeriod {
 
     private final List<BankrollItem> sortedByDateItems;
     private final DatePeriod period;
-    @Nullable
     private final Integer initialMoney;
-    @Nullable
     private final Integer initialPoints;
 
 
-    public BankrollOfPeriod(List<BankrollItem> bankrollItems, @Nullable BankrollItem lastItem, DatePeriod period) {
+    public BankrollOfPeriod(List<BankrollItem> bankrollItems, BankrollItem lastItem, DatePeriod period) {
         this.period = period;
         Collections.sort(bankrollItems);
         this.sortedByDateItems = Collections.unmodifiableList(bankrollItems);

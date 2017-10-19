@@ -9,6 +9,10 @@ public class Utils {
         return LocalDateTime.now();
     }
 
+    public static LocalDate currentDate() {
+        return LocalDate.now();
+    }
+
     public static LocalDateTime endOfDay(LocalDate date) {
         return date.atTime(23, 59, 59);
     }

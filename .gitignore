@@ -5,6 +5,9 @@
 
 .idea
 
+## DB directory:
+/db/
+
 ## File-based project format:
 *.iws
 
