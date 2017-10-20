@@ -21,4 +21,6 @@ interface BankrollService {
 
     BankrollItem getLastItem();
 
+    BankrollItemDto mapToDto(BankrollItem item);
+
 }

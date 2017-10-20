@@ -1,5 +1,6 @@
 package ru.bender.pokerstatistic.bankroll;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bender.pokerstatistic.utils.DatePeriod;
@@ -18,10 +19,12 @@ import static ru.bender.pokerstatistic.utils.Utils.now;
 class BankrollServiceImpl implements BankrollService {
 
     private final BankrollItemDao dao;
+    private final ModelMapper mapper;
 
     @Autowired
-    BankrollServiceImpl(BankrollItemDao dao) {
+    BankrollServiceImpl(BankrollItemDao dao, ModelMapper mapper) {
         this.dao = dao;
+        this.mapper = mapper;
     }
 
     @Override
@@ -96,5 +99,10 @@ class BankrollServiceImpl implements BankrollService {
     @Override
     public BankrollItem getLastItem() {
         return dao.findFirstByOrderByDateTimeDesc();
+    }
+
+    @Override
+    public BankrollItemDto mapToDto(BankrollItem item) {
+        return mapper.map(item, BankrollItemDto.class);
     }
 }

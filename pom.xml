@@ -53,7 +53,12 @@
 			<artifactId>h2</artifactId>
 			<version>1.4.196</version>
 		</dependency>
-        <dependency>
+		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>0.7.5</version>
+		</dependency>
+		<dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>6.11</version>
