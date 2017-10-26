@@ -10,10 +10,8 @@ interface BankrollService {
 
     LocalTime TIME_FOR_NEW_ITEM_FROM_PAST_DAY = LocalTime.of(12, 0);
 
-    BankrollItem addItem(int money, int points, Type type, String comment);
-
-    BankrollItem addItemForDate(LocalDate date, int money, int points, Type type, String comment)
-    throws ExistFutureItemException, AddItemForTodayException, AddItemInFutureException;
+    BankrollItem addItem(LocalDate date, int money, int points, Type type, String comment)
+    throws ExistFutureItemException, AddItemInFutureException;
 
     BankrollOfPeriod getPeriodItems(DatePeriod period);
 

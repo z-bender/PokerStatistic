@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
+import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
@@ -27,11 +28,6 @@ class BankrollServiceImpl implements BankrollService {
         this.mapper = mapper;
     }
 
-    @Override
-    public BankrollItem addItem(int money, int points, BankrollItem.Type type, String comment) {
-        return saveNewItem(now(), money, points, type, comment);
-    }
-
     private BankrollItem saveNewItem(LocalDateTime itemDateTime, int money, int points,
                                      BankrollItem.Type type, String comment) {
         final BankrollItem newItem = BankrollItem.newItem(itemDateTime, money, points, type, comment);
@@ -39,19 +35,21 @@ class BankrollServiceImpl implements BankrollService {
     }
 
     @Override
-    public BankrollItem addItemForDate(LocalDate date, int money, int points, BankrollItem.Type type, String comment)
-            throws ExistFutureItemException, AddItemForTodayException, AddItemInFutureException {
+    public BankrollItem addItem(LocalDate date, int money, int points, BankrollItem.Type type, String comment)
+            throws ExistFutureItemException, AddItemInFutureException {
 
         final LocalDateTime newItemDateTime = validationDateAndGetNewItemDateTime(date);
         return saveNewItem(newItemDateTime, money, points, type, comment);
     }
 
     private LocalDateTime validationDateAndGetNewItemDateTime(LocalDate date)
-            throws AddItemInFutureException, ExistFutureItemException, AddItemForTodayException {
+            throws AddItemInFutureException, ExistFutureItemException {
 
-        checkThatDateIsNotToday(date);
         checkThatDateIsNotAFuture(date);
         checkThatNotExistItemWithLaterDate(date);
+        if (currentDate().equals(date)) {
+            return now();
+        }
         LocalDateTime lastItemDateTime = getLastItemDateTimeByDate(date);
         boolean isLastItemAfterDefaultTimeOfNewItem =
                 nonNull(lastItemDateTime) && !lastItemDateTime.isBefore(date.atTime(TIME_FOR_NEW_ITEM_FROM_PAST_DAY));
@@ -63,12 +61,6 @@ class BankrollServiceImpl implements BankrollService {
     private LocalDateTime getLastItemDateTimeByDate(LocalDate date) {
         final BankrollItem lastItem = getLastItemByDate(date);
         return lastItem != null ? lastItem.getDateTime() : null;
-    }
-
-    private void checkThatDateIsNotToday(LocalDate date) throws AddItemForTodayException {
-        if (LocalDate.now().equals(date)) {
-            throw new AddItemForTodayException();
-        }
     }
 
     private void checkThatDateIsNotAFuture(LocalDate date) throws AddItemInFutureException {

@@ -1,19 +1,18 @@
 package ru.bender.pokerstatistic.bankroll;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/bankroll")
 class BankrollController {
 
@@ -25,17 +24,15 @@ class BankrollController {
     }
 
     @PostMapping(value = "/add")
-    public void add(@RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDateTime date,
-                    @RequestParam Integer money,
-                    @RequestParam Integer points,
-                    @RequestParam BankrollItem.Type type,
-                    @RequestParam String comment)
-            throws AddItemInFutureException, ExistFutureItemException, AddItemForTodayException {
-        if (date.toLocalDate().equals(currentDate())) {
-            service.addItem(money, points, type, comment);
-        } else {
-            service.addItemForDate(date.toLocalDate(), money, points, type, comment);
-        }
+    public void add(@RequestBody BankrollItemDto newItem)
+            throws AddItemInFutureException, ExistFutureItemException {
+        service.addItem(
+                newItem.dateTime.toLocalDate(),
+                newItem.money,
+                newItem.points,
+                Type.parse(newItem.type),
+                newItem.comment
+        );
     }
 
     @GetMapping(value = "/getLast")

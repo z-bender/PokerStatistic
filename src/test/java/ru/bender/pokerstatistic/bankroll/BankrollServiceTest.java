@@ -26,6 +26,7 @@ import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.OTHER;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.WITHDRAWAL;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 import static ru.bender.pokerstatistic.bankroll.BankrollService.TIME_FOR_NEW_ITEM_FROM_PAST_DAY;
+import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 
 @UnitTest
@@ -40,13 +41,13 @@ public class BankrollServiceTest extends AbstractTest {
 
 
     @Test
-    public void addItem() {
+    public void addItem() throws AddItemInFutureException, ExistFutureItemException {
         final int money = 300;
         final int points = 400;
         final Type type = DEPOSIT;
         final String comment = "Just comment";
 
-        BankrollItem newItem = service.addItem(money, points, type, comment);
+        BankrollItem newItem = service.addItem(currentDate(), money, points, type, comment);
 
         assertNotNull(newItem.getType());
         assertEquals(newItem.getType(), type);
@@ -64,7 +65,7 @@ public class BankrollServiceTest extends AbstractTest {
         final Type type = DEPOSIT;
         final String comment = "Just comment";
 
-        BankrollItem newItem = service.addItemForDate(date, money, points, type, comment);
+        BankrollItem newItem = service.addItem(date, money, points, type, comment);
 
         assertNotNull(newItem.getType());
         assertEquals(newItem.getType(), type);
@@ -79,11 +80,11 @@ public class BankrollServiceTest extends AbstractTest {
         LocalDate date = LocalDate.now().minusDays(7);
 
         BankrollItem itemAtStartOfDay = addNewItem(date.atTime(0, 0));
-        BankrollItem newItem1 = service.addItemForDate(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, DEPOSIT, null);
+        BankrollItem newItem1 = service.addItem(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, DEPOSIT, null);
         assertEquals(service.getLastItemByDate(date), newItem1);
 
         BankrollItem itemAtEndOfDay = addNewItem(date.atTime(23, 59));
-        BankrollItem newItem2 = service.addItemForDate(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, OTHER, null);
+        BankrollItem newItem2 = service.addItem(date, IRRELEVANT_VALUE, IRRELEVANT_VALUE, OTHER, null);
         assertEquals(service.getLastItemByDate(date), newItem2);
     }
 
@@ -91,24 +92,19 @@ public class BankrollServiceTest extends AbstractTest {
     public void addForDateWithExistingTodayItem() throws Exception {
         LocalDateTime now = LocalDateTime.now();
         addNewItem(now);
-        service.addItemForDate(now.minusDays(1).toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
+        service.addItem(now.minusDays(1).toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
     }
 
     @Test(expectedExceptions = ExistFutureItemException.class)
     public void addForDateWithExistingFutureItem() throws Exception {
         LocalDateTime date = LocalDateTime.now().minusDays(5);
         addNewItem(date.plusDays(1));
-        service.addItemForDate(date.toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
-    }
-
-    @Test(expectedExceptions = AddItemForTodayException.class)
-    public void addItemForDateToday() throws Exception {
-        service.addItemForDate(LocalDate.now(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, DEPOSIT, null);
+        service.addItem(date.toLocalDate(), IRRELEVANT_VALUE, IRRELEVANT_VALUE, WITHDRAWAL, null);
     }
 
     @Test(expectedExceptions = AddItemInFutureException.class)
     public void addItemForDateInFuture() throws Exception {
-        service.addItemForDate(LocalDate.now().plusDays(1), IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
+        service.addItem(LocalDate.now().plusDays(1), IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME, null);
     }
 
     @Test

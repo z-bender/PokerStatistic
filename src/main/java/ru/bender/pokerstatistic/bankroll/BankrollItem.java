@@ -71,6 +71,10 @@ class BankrollItem implements Serializable, Comparable<BankrollItem> {
         Type(String description) {
             this.description = description;
         }
+
+        public static Type parse(String type) {
+            return Type.valueOf(type.toUpperCase());
+        }
     }
 
 }
