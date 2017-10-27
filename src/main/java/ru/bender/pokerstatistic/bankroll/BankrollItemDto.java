@@ -1,11 +1,11 @@
 package ru.bender.pokerstatistic.bankroll;
 
-import lombok.ToString;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-@ToString
+@Data
 public class BankrollItemDto implements Serializable {
 
     Integer id;

@@ -24,13 +24,12 @@ class BankrollController {
     }
 
     @PostMapping(value = "/add")
-    public void add(@RequestBody BankrollItemDto newItem)
-            throws AddItemInFutureException, ExistFutureItemException {
+    public void add(@RequestBody BankrollItemDto newItem) throws AddItemInFutureException, ExistFutureItemException {
         service.addItem(
                 newItem.dateTime.toLocalDate(),
                 newItem.money,
                 newItem.points,
-                Type.parse(newItem.type),
+                Type.fromString(newItem.type),
                 newItem.comment
         );
     }
