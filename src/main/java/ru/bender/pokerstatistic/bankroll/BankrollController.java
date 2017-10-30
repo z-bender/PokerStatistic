@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/bankroll")
+@RequestMapping("/api/bankroll")
 class BankrollController {
 
     private final BankrollService service;
@@ -39,6 +39,7 @@ class BankrollController {
         return service.mapToDto(service.getLastItem());
     }
 
+    // todo: лишний метод?
     @GetMapping(value = "/getLastByDate")
     public BankrollItemDto getLastByDate(LocalDate date) {
         return service.mapToDto(service.getLastItemByDate(date));

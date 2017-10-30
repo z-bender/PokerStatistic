@@ -8,6 +8,9 @@
 ## DB directory:
 /db/
 
+## Web target
+/src/main/webapp/
+
 ## File-based project format:
 *.iws
 
