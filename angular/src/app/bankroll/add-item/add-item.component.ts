@@ -25,7 +25,9 @@ export class AddItemComponent implements OnInit {
     this.bankrollItem.type = ItemType.GAME;
     this.bankrollItem.dateTime = new Date();
 
-    this.bankrollService.getLast(lastItem => this.updateLastItem(lastItem));
+    this.bankrollService.getLast().subscribe(
+      result => this.updateLastItem(result),
+    );
   }
 
   ngOnInit(): void {
@@ -39,7 +41,10 @@ export class AddItemComponent implements OnInit {
   }
 
   add(): void {
-    this.bankrollService.add(this.bankrollItem, lastItem => this.updateLastItem(lastItem));
+    this.bankrollService.add(this.bankrollItem)
+      .subscribe(
+        lastItem => this.updateLastItem(lastItem),
+      );
   }
 
   updateLastItem(lastItem: BankrollItem): void {

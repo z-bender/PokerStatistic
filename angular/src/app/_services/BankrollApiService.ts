@@ -1,35 +1,37 @@
 import {Injectable} from '@angular/core';
 import {BankrollItem} from '../bankroll/bankroll-item';
 import {AbstractApiService} from './AbstractApiService';
+import {Response} from '@angular/http';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class BankrollApiService extends AbstractApiService {
 
   private bankrollApiUrl = this.apiUrl + '/bankroll';
 
-  add(item: BankrollItem, successCallback) {
+  add(item: BankrollItem): Observable<BankrollItem> {
     const url: string = this.bankrollApiUrl + '/add';
-    this.post(url, item).subscribe(
-        result => successCallback(this.getBankrollItemFromApiResponse(result)),
-        error => console.log('Error in add: ' + error)
-      );
+    return this.post(url, item)
+      .map(response => this.getBankrollItemFromApiResponse(response))
+      .catch(this.handleError);
   }
 
-  getLast(successCallback): void {
+  getLast(): Observable<BankrollItem> {
     const url: string = this.bankrollApiUrl + '/getLast';
-    this.get(url).subscribe(
-      result => successCallback(this.getBankrollItemFromApiResponse(result)),
-      error => console.log('Error in getLast:' + error)
-    );
+    return this.get(url)
+      .map(response => this.getBankrollItemFromApiResponse(response))
+      .catch(this.handleError);
   }
 
-  getBankrollItemFromApiResponse(response): BankrollItem {
+  getBankrollItemFromApiResponse(response: Response): BankrollItem {
     const bankrollItem: BankrollItem = response.json();
     this.parseDateFromApiResponse(bankrollItem);
     return bankrollItem;
   }
 
-  parseDateFromApiResponse(item: BankrollItem): void {
+  parseDateFromApiResponse(item: BankrollItem) {
     const dateArray = item.dateTime;
     item.dateTime = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
   }
