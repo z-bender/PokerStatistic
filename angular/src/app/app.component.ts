@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import './rx-js.operators.ts';
 
 @Component({
   selector: 'app-root',
