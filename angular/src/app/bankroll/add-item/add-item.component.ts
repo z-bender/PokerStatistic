@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BankrollItem, ItemType, ItemTypeTranslator} from '../bankroll-item';
 import {BankrollApiService} from '../../_services/BankrollApiService';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   moduleId: module.id,
@@ -19,32 +19,24 @@ export class AddItemComponent implements OnInit {
   addItemForm: FormGroup;
   itemTypes: string[];
 
-  constructor(private bankrollService: BankrollApiService) {
+  constructor(private bankrollService: BankrollApiService, private formBuilder: FormBuilder) {
     this.itemTypes = Object.keys(ItemType);
+  }
+
+  private createDefaultItem() {
     this.bankrollItem = new BankrollItem();
     this.bankrollItem.type = ItemType.GAME;
     this.bankrollItem.dateTime = new Date();
-
-    this.bankrollService.getLast().subscribe(
-      result => this.updateLastItem(result),
-    );
   }
 
   ngOnInit(): void {
-    this.addItemForm = new FormGroup({
-      date: new FormControl('', Validators.required),
-      money: new FormControl('', Validators.required),
-      points: new FormControl('', Validators.required),
-      itemType: new FormControl('', Validators.required),
-      comment: new FormControl(''),
-    });
+    this.buildForm();
+    this.createDefaultItem();
+    this.bankrollService.getLast().subscribe(result => this.updateLastItem(result));
   }
 
   add(): void {
-    this.bankrollService.add(this.bankrollItem)
-      .subscribe(
-        lastItem => this.updateLastItem(lastItem),
-      );
+    this.bankrollService.add(this.bankrollItem).subscribe(lastItem => this.updateLastItem(lastItem));
   }
 
   updateLastItem(lastItem: BankrollItem): void {
@@ -65,6 +57,16 @@ export class AddItemComponent implements OnInit {
 
   getTypeDescription(itemTypeValue: string): string {
     return ItemTypeTranslator[itemTypeValue];
+  }
+
+  private buildForm() {
+    this.addItemForm = this.formBuilder.group({
+      date: ['', Validators.required],
+      money: ['', Validators.required],
+      points: ['', Validators.required],
+      itemType: ['', Validators.required],
+      comment: [''],
+    });
   }
 
 }
