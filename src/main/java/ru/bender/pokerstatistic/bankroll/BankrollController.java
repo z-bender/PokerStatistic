@@ -24,14 +24,16 @@ class BankrollController {
     }
 
     @PostMapping(value = "/add")
-    public void add(@RequestBody BankrollItemDto newItem) throws AddItemInFutureException, ExistFutureItemException {
-        service.addItem(
+    public BankrollItemDto add(@RequestBody BankrollItemDto newItem)
+            throws AddItemInFutureException, ExistFutureItemException {
+        BankrollItem addedItem = service.addItem(
                 newItem.dateTime.toLocalDate(),
                 newItem.money,
                 newItem.points,
                 Type.fromString(newItem.type),
                 newItem.comment
         );
+        return service.mapToDto(addedItem);
     }
 
     @GetMapping(value = "/getLast")

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, RequestOptions} from '@angular/http';
 import {BankrollItem} from '../bankroll/bankroll-item';
 import {AbstractApiService} from './AbstractApiService';
 
@@ -8,39 +7,31 @@ export class BankrollApiService extends AbstractApiService {
 
   private bankrollApiUrl = this.apiUrl + '/bankroll';
 
-  constructor(private http: Http) {
-    super();
-  }
-
-  add(item: BankrollItem) {
+  add(item: BankrollItem, successCallback) {
     const url: string = this.bankrollApiUrl + '/add';
-    const body = JSON.stringify(item);
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
-    this.http.post(url, body, options)
-      .subscribe(
-        // fixme: ошибка в result
-        result => console.log(result.json()),
-        error => console.log(error.statusText)
+    this.post(url, item).subscribe(
+        result => successCallback(this.getBankrollItemFromApiResponse(result)),
+        error => console.log('Error in add: ' + error)
       );
   }
 
   getLast(successCallback): void {
     const url: string = this.bankrollApiUrl + '/getLast';
-    const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
-    this.http.get(url, options).subscribe(
-      result => {
-        const data: BankrollItem = result.json();
-        data.dateTime = this.parseDateFromApiResponse(data.dateTime);
-        successCallback(data);
-      },
-      error => console.log('Error in getLast:' + error.statusText)
+    this.get(url).subscribe(
+      result => successCallback(this.getBankrollItemFromApiResponse(result)),
+      error => console.log('Error in getLast:' + error)
     );
   }
 
-  parseDateFromApiResponse(dateArray): Date {
-    return new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
+  getBankrollItemFromApiResponse(response): BankrollItem {
+    const bankrollItem: BankrollItem = response.json();
+    this.parseDateFromApiResponse(bankrollItem);
+    return bankrollItem;
+  }
+
+  parseDateFromApiResponse(item: BankrollItem): void {
+    const dateArray = item.dateTime;
+    item.dateTime = new Date(dateArray[0], dateArray[1] - 1, dateArray[2]);
   }
 
 }

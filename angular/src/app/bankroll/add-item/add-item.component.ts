@@ -25,15 +25,7 @@ export class AddItemComponent implements OnInit {
     this.bankrollItem.type = ItemType.GAME;
     this.bankrollItem.dateTime = new Date();
 
-    this.bankrollService.getLast(
-      result => {
-        this.lastItem = result;
-        this.bankrollItem.money = this.lastItem.money;
-        this.bankrollItem.points = this.lastItem.points;
-        this.calcMoneyDifference();
-        this.calcPointsDifference();
-      }
-    );
+    this.bankrollService.getLast(lastItem => this.updateLastItem(lastItem));
   }
 
   ngOnInit(): void {
@@ -47,20 +39,26 @@ export class AddItemComponent implements OnInit {
   }
 
   add(): void {
-    console.log(this.bankrollItem);
-    this.bankrollService.add(this.bankrollItem);
-    // todo: update lastItem (передавать коллбэк на сервис?)
+    this.bankrollService.add(this.bankrollItem, lastItem => this.updateLastItem(lastItem));
   }
 
-  calcMoneyDifference() {
+  updateLastItem(lastItem: BankrollItem): void {
+    this.lastItem = lastItem;
+    this.bankrollItem.money = this.lastItem.money;
+    this.bankrollItem.points = this.lastItem.points;
+    this.calcMoneyDifference();
+    this.calcPointsDifference();
+  }
+
+  calcMoneyDifference(): void {
     this.moneyDifference = this.bankrollItem.money - this.lastItem.money;
   }
 
-  calcPointsDifference() {
+  calcPointsDifference(): void {
     this.pointsDifference = this.bankrollItem.points - this.lastItem.points;
   }
 
-  getTypeDescription(itemTypeValue: string) {
+  getTypeDescription(itemTypeValue: string): string {
     return ItemTypeTranslator[itemTypeValue];
   }
 
