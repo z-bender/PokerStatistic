@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {AddItemComponent, BankrollComponent, BankrollItem} from './index';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {MatDatepickerModule} from '@angular/material';
 import {HttpModule} from '@angular/http';
 import {BankrollApiService} from '../_services/BankrollApiService';
 import {AbstractApiService} from '../_services/AbstractApiService';
 import {CommonModule, DatePipe} from '@angular/common';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [BankrollComponent, AddItemComponent],
   providers: [BankrollItem, AddItemComponent, BankrollApiService, AbstractApiService, DatePipe],
-  imports: [FormsModule, MatDatepickerModule, HttpModule, ReactiveFormsModule, CommonModule]
+  imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
 })
 export class BankrollModule {
 

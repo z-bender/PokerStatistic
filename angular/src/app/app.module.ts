@@ -2,10 +2,9 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-
-import {AppComponent, BankrollModule, PlayersModule} from './index';
-import {MatNativeDateModule} from '@angular/material';
 import {AppRoutingModule} from './app-routing.module';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {AppComponent, BankrollModule, PlayersModule} from './index';
 
 @NgModule({
   declarations: [
@@ -17,10 +16,11 @@ import {AppRoutingModule} from './app-routing.module';
     HttpModule,
     PlayersModule,
     BankrollModule,
-    MatNativeDateModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {
+}
