@@ -5,7 +5,7 @@
     </div>
     <div class="form-group">
       <input id="date" class="form-control" placeholder="yyyy-mm-dd" class="form-control" formControlName="date"
-             name="date" [(ngModel)]="bankrollItem.dateTime" ngbDatepicker #d="ngbDatepicker">
+             name="date" [(ngModel)]="datepickerValue" ngbDatepicker #d="ngbDatepicker">
       <button class="input-group-addon" (click)="d.toggle()" type="button">
         <img src="../../../assets/calendar-icon.svg" style="width: 1.2rem; height: 1rem; cursor: pointer;"/>
       </button>

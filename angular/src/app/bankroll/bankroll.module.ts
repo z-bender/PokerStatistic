@@ -6,10 +6,11 @@ import {BankrollApiService} from '../_services/BankrollApiService';
 import {AbstractApiService} from '../_services/AbstractApiService';
 import {CommonModule, DatePipe} from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter} from '../_services/NgbDateParserFormatter';
 
 @NgModule({
   declarations: [BankrollComponent, AddItemComponent],
-  providers: [BankrollItem, AddItemComponent, BankrollApiService, AbstractApiService, DatePipe],
+  providers: [BankrollItem, AddItemComponent, BankrollApiService, AbstractApiService, DatePipe, NgbDateParserFormatter],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
 })
 export class BankrollModule {

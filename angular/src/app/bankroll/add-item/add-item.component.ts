@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BankrollItem, ItemType, ItemTypeTranslator} from '../bankroll-item';
 import {BankrollApiService} from '../../_services/BankrollApiService';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {NgbDateParserFormatter} from '../../_services/NgbDateParserFormatter';
 
 @Component({
   moduleId: module.id,
@@ -14,19 +15,21 @@ export class AddItemComponent implements OnInit {
 
   bankrollItem: BankrollItem;
   lastItem: BankrollItem;
+  datepickerValue;
   moneyDifference: number;
   pointsDifference: number;
   addItemForm: FormGroup;
   itemTypes: string[];
 
-  constructor(private bankrollService: BankrollApiService, private formBuilder: FormBuilder) {
+  constructor(private bankrollService: BankrollApiService,
+              private formBuilder: FormBuilder,
+              private ngbDateParser:NgbDateParserFormatter) {
     this.itemTypes = Object.keys(ItemType);
   }
 
   private createDefaultItem() {
     this.bankrollItem = new BankrollItem();
     this.bankrollItem.type = ItemType.GAME;
-    this.bankrollItem.dateTime = new Date();
   }
 
   ngOnInit(): void {
@@ -36,6 +39,7 @@ export class AddItemComponent implements OnInit {
   }
 
   add(): void {
+    this.bankrollItem.dateTime = this.ngbDateParser.toDate(this.datepickerValue);
     this.bankrollService.add(this.bankrollItem).subscribe(lastItem => this.updateLastItem(lastItem));
   }
 
@@ -67,6 +71,7 @@ export class AddItemComponent implements OnInit {
       itemType: ['', Validators.required],
       comment: [''],
     });
+    this.datepickerValue = this.ngbDateParser.fromDate(new Date())
   }
 
 }
