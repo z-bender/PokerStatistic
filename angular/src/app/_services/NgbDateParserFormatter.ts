@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker.module';
 
 @Injectable()
 export class NgbDateParserFormatter {
@@ -15,11 +16,4 @@ export class NgbDateParserFormatter {
     }
   }
 
-}
-
-// for clarity
-class NgbDateStruct {
-  year;
-  month;
-  day;
 }

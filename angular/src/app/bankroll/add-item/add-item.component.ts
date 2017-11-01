@@ -3,6 +3,7 @@ import {BankrollItem, ItemType, ItemTypeTranslator} from '../bankroll-item';
 import {BankrollApiService} from '../../_services/BankrollApiService';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NgbDateParserFormatter} from '../../_services/NgbDateParserFormatter';
+import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker.module';
 
 @Component({
   moduleId: module.id,
@@ -15,7 +16,7 @@ export class AddItemComponent implements OnInit {
 
   bankrollItem: BankrollItem;
   lastItem: BankrollItem;
-  datepickerValue;
+  datepickerValue: NgbDateStruct;
   moneyDifference: number;
   pointsDifference: number;
   addItemForm: FormGroup;
