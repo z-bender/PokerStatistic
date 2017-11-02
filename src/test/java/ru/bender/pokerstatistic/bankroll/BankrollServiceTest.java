@@ -1,9 +1,7 @@
 package ru.bender.pokerstatistic.bankroll;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.testng.annotations.Test;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
-import ru.bender.pokerstatistic.testing.AbstractTest;
 import ru.bender.pokerstatistic.testing.UnitTest;
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
@@ -24,21 +22,12 @@ import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.DEPOSIT;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.OTHER;
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.WITHDRAWAL;
-import static ru.bender.pokerstatistic.bankroll.BankrollItem.newItem;
 import static ru.bender.pokerstatistic.bankroll.BankrollService.TIME_FOR_NEW_ITEM_FROM_PAST_DAY;
 import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
 
 @UnitTest
-public class BankrollServiceTest extends AbstractTest {
-
-    private final static int IRRELEVANT_VALUE = 500;
-
-    @Autowired
-    private BankrollService service;
-    @Autowired
-    private BankrollItemDao dao;
-
+public class BankrollServiceTest extends AbstractBankrollTest {
 
     @Test
     public void addItem() throws AddItemInFutureException, ExistFutureItemException {
@@ -173,14 +162,6 @@ public class BankrollServiceTest extends AbstractTest {
         addNewItem(date.plusDays(1).atStartOfDay());
 
         assertEquals(service.getLastItemByDate(date), expected);
-    }
-
-    private BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, Type type) {
-        return dao.save(newItem(dateTime, money, points, type, null));
-    }
-
-    private BankrollItem addNewItem(LocalDateTime dateTime) {
-        return addNewItem(dateTime, IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME);
     }
 
     private void assertDateTimeInFiveSecondsFromNow(BankrollItem newItem) {

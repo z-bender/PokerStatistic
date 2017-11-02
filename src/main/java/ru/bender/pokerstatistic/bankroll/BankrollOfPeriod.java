@@ -24,11 +24,11 @@ class BankrollOfPeriod {
     }
 
 
-    private PeriodResult getPeriodResult() {
+    public PeriodResult getPeriodResult() {
         return null;
     }
 
-    private List<ItemResult> getItemsResults() {
+    public List<ItemResult> getItemsResults() {
         return null;
     }
 
