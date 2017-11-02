@@ -1,6 +1,7 @@
 package ru.bender.pokerstatistic.bankroll;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 import ru.bender.pokerstatistic.testing.AbstractTest;
 
 import java.time.LocalDateTime;
@@ -17,8 +18,13 @@ abstract public class AbstractBankrollTest extends AbstractTest {
     @Autowired
     protected BankrollItemDao dao;
 
-    protected BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, BankrollItem.Type type) {
-        return dao.save(newItem(dateTime, money, points, type, null));
+    protected BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points,
+                                      Type type, String comment) {
+        return dao.save(newItem(dateTime, money, points, type, comment));
+    }
+
+    protected BankrollItem addNewItem(LocalDateTime dateTime, Integer money, Integer points, Type type) {
+        return addNewItem(dateTime, money, points, type, null);
     }
 
     protected BankrollItem addNewItem(LocalDateTime dateTime) {
