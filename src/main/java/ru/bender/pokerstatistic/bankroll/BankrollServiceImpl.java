@@ -77,7 +77,7 @@ class BankrollServiceImpl implements BankrollService {
     }
 
     @Override
-    public BankrollOfPeriod getPeriodItems(DatePeriod period) {
+    public BankrollOfPeriod getBankrollOfPeriod(DatePeriod period) {
         List<BankrollItem> items = dao.findAllByDateTimeBetween(period.start.atStartOfDay(), endOfDay(period.end));
         BankrollItem lastItemBeforePeriod = getLastItemByDate(period.start.minusDays(1));
         return new BankrollOfPeriod(items, lastItemBeforePeriod, period);

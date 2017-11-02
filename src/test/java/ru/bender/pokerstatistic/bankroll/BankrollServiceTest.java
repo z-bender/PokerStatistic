@@ -121,7 +121,7 @@ public class BankrollServiceTest extends AbstractTest {
         expected.add(addNewItem(period.start.plusDays(1).atTime(13, 13, 13)));
         expected.add(addNewItem(endOfDay(period.end)));
 
-        List<BankrollItem> actual = service.getPeriodItems(period).getItems();
+        List<BankrollItem> actual = service.getBankrollOfPeriod(period).getItems();
 
         assertCollectionsEquals(actual, expected);
     }
@@ -135,7 +135,7 @@ public class BankrollServiceTest extends AbstractTest {
         addNewItem(getDateTimeBeforePeriod(period));
         addNewItem(getDateTimeAfterPeriod(period));
 
-        assertThat(service.getPeriodItems(period).getItems(), is(empty()));
+        assertThat(service.getBankrollOfPeriod(period).getItems(), is(empty()));
     }
 
     @Test

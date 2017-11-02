@@ -28,6 +28,10 @@ class BankrollOfPeriod {
         return null;
     }
 
+    private List<ItemResult> getItemsResults() {
+        return null;
+    }
+
     public List<BankrollItem> getItems() {
         return sortedByDateItems;
     }
