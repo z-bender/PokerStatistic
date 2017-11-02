@@ -74,5 +74,74 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         );
     }
 
+    @Test
+    public void getPeriodResult() {
+        DatePeriod period = new DatePeriod(of(2017, 5, 10), of(2017, 5, 16));
+        BankrollItem itemBeforePeriod = addNewItem(endOfDay(period.start).minusSeconds(1));
+        BankrollItem lastItemBeforePeriod = addNewItem(endOfDay(period.start), 500, 1000, DEPOSIT);
+        BankrollItem itemAfterPeriod = addNewItem(period.end.plusDays(1).atStartOfDay(), 10000, 10000, GAME);
+
+        BankrollItem item1 = addNewItem(period.start.atStartOfDay(), 510, 1200, GAME);
+        BankrollItem item2 = addNewItem(period.start.plusDays(3).atTime(12, 0), 610, 1200, DEPOSIT);
+        BankrollItem item3 = addNewItem(item2.getDateTime().plusSeconds(1), 611, 1200, GAME);
+        BankrollItem item4 = addNewItem(item3.getDateTime().plusSeconds(1), 620, 700, CONVERT_BONUS);
+        BankrollItem item5 = addNewItem(item4.getDateTime().plusDays(1), 650, 720, OTHER);
+        BankrollItem item6 = addNewItem(item5.getDateTime().plusSeconds(1), 50, 720, WITHDRAWAL);
+        BankrollItem item7 = addNewItem(item6.getDateTime().plusSeconds(1), 100, 720, DEPOSIT);
+        BankrollItem item8 = addNewItem(item7.getDateTime().plusSeconds(1), 95, 750, GAME);
+        BankrollItem item9 = addNewItem(endOfDay(period.end), 5, 750, WITHDRAWAL);
+
+        PeriodResult expected = new PeriodResult(period);
+        expected.moneyAtEnd = 5;
+        expected.winning = 10 + 1 - 5;
+        expected.deposit = 100 + 50;
+        expected.bonus = 9;
+        expected.otherChanges = 30;
+        expected.withdrawal = 600 + 90;
+        expected.pointsAtEnd = 750;
+        expected.earnedPoints = 200 + 20 + 30;
+        expected.spentPoints = 500;
+        expected.period = period;
+
+        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void getPeriodResultWithoutLastItem() {
+        DatePeriod period = new DatePeriod(of(2017, 3, 1), of(2017, 10, 1));
+        BankrollItem firstItemInDb = addNewItem(period.start.atStartOfDay(), 500, 700, DEPOSIT);
+        BankrollItem item2 = addNewItem(firstItemInDb.getDateTime().plusDays(1), 600, 710, GAME);
+        BankrollItem item3 = addNewItem(item2.getDateTime().plusDays(1), 300, 710, WITHDRAWAL);
+
+        PeriodResult expected = new PeriodResult(period);
+        expected.moneyAtEnd = 300;
+        expected.winning = 100;
+        expected.deposit = 0;
+        expected.bonus = 0;
+        expected.otherChanges = 0;
+        expected.withdrawal = 300;
+        expected.pointsAtEnd = 710;
+        expected.earnedPoints = 10;
+        expected.spentPoints = 0;
+
+        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        assertEquals(actual, expected);
+    }
+
+    @Test
+    public void getEmptyPeriodResult() {
+        DatePeriod period = new DatePeriod(of(2017, 1, 1), of(2017, 1, 31));
+        BankrollItem item1BeforePeriod = addNewItem(period.start.minusDays(1).atStartOfDay(), 100, 200, DEPOSIT);
+        BankrollItem item2BeforePeriod = addNewItem(endOfDay(period.start.minusDays(1)), 120, 220, GAME);
+        BankrollItem itemAfterPeriod = addNewItem(period.end.plusDays(1).atStartOfDay(), 150, 300, GAME);
+
+        PeriodResult expected = new PeriodResult(period);
+        expected.moneyAtEnd = 120;
+        expected.pointsAtEnd = 220;
+
+        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        assertEquals(actual, expected);
+    }
 
 }
