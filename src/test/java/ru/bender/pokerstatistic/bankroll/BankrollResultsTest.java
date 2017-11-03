@@ -59,6 +59,23 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         assertEquals(actual, expected);
     }
 
+    @Test
+    public void getItemResultsWithoutItemBefore() {
+        DatePeriod period = new DatePeriod(
+                of(2017, 06, 01),
+                of(2017, 07, 01)
+        );
+        BankrollItem firstItemInDb = addNewItem(period.start.atStartOfDay(), 300, 200, OTHER, "Первая запись в БД");
+        BankrollItem secondItem = addNewItem(firstItemInDb.getDateTime().plusSeconds(1), 400, 250, GAME);
+
+        List<ItemResult> expected = new ArrayList<>();
+        expected.add(createItemResult(firstItemInDb, 0, 0));
+        expected.add(createItemResult(secondItem, 100, 50));
+
+        List<ItemResult> actual = service.getBankrollOfPeriod(period).getItemsResults();
+        assertEquals(actual, expected);
+    }
+
     private ItemResult createItemResult(int id, LocalDateTime date, int money, int points, Type type, String comment) {
         return new ItemResult(id, date.toLocalDate(), money, points, type, comment);
     }
