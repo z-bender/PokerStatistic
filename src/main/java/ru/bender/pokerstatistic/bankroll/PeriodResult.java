@@ -31,4 +31,40 @@ class PeriodResult implements Serializable {
         this.earnedPoints = 0;
         this.spentPoints = 0;
     }
+
+    public void calculateItemResult(ItemResult itemResult) {
+        calculateItemMoney(itemResult);
+        calculateItemPoints(itemResult);
+    }
+
+    private void calculateItemMoney(ItemResult itemResult) {
+        Integer money = itemResult.getMoneyDifference();
+        switch (itemResult.getType()) {
+            case GAME:
+                winning += money;
+                break;
+            case DEPOSIT:
+                deposit += money;
+                break;
+            case WITHDRAWAL:
+                withdrawal += -money;
+                break;
+            case CONVERT_BONUS:
+                bonus += money;
+                break;
+            case OTHER:
+                otherChanges += money;
+                break;
+        }
+    }
+
+    private void calculateItemPoints(ItemResult itemResult) {
+        int points = itemResult.getPointsDifference();
+        if (points > 0) {
+            earnedPoints += points;
+        } else {
+            spentPoints += -points;
+        }
+    }
+
 }

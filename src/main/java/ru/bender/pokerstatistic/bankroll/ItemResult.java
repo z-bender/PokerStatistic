@@ -18,4 +18,13 @@ public class ItemResult implements Serializable {
     private Type type;
     private String comment;
 
+    public ItemResult(BankrollItem bankrollItem, Integer moneyDifference, Integer pointsDifference) {
+        this.id = bankrollItem.getId();
+        this.date = bankrollItem.getDateTime().toLocalDate();
+        this.moneyDifference = moneyDifference;
+        this.pointsDifference = pointsDifference;
+        this.type = bankrollItem.getType();
+        this.comment = bankrollItem.getComment();
+    }
+
 }

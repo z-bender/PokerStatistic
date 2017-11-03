@@ -52,6 +52,10 @@ class BankrollItem implements Serializable, Comparable<BankrollItem> {
         return new BankrollItem(dateTime, money, points, type, comment);
     }
 
+    public ItemResult getItemResult(int previousMoneyValue, int previousPointsValue) {
+        return new ItemResult(this, money - previousMoneyValue, points - previousPointsValue);
+    }
+
     @Override
     public int compareTo(BankrollItem otherItem) {
         return this.dateTime.isAfter(otherItem.dateTime) ? 1 : -1;

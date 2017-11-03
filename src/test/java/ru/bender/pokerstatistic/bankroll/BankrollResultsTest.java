@@ -30,7 +30,7 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         int initMoney = 300;
         int initPoints = 500;
         BankrollItem itemBeforePeriod = addNewItem(endOfDay(period.start.minusDays(1)), initMoney, initPoints, DEPOSIT);
-        BankrollItem itemAfterPeriod = addNewItem(period.start.plusDays(1).atStartOfDay());
+        BankrollItem itemAfterPeriod = addNewItem(period.end.plusDays(1).atStartOfDay());
 
         List<ItemResult> expected = new ArrayList<>();
         BankrollItem item1 = addNewItem(period.start.atStartOfDay(),
@@ -62,8 +62,8 @@ public class BankrollResultsTest extends AbstractBankrollTest {
     @Test
     public void getItemResultsWithoutItemBefore() {
         DatePeriod period = new DatePeriod(
-                of(2017, 06, 01),
-                of(2017, 07, 01)
+                of(2017, 6, 1),
+                of(2017, 7, 1)
         );
         BankrollItem firstItemInDb = addNewItem(period.start.atStartOfDay(), 300, 200, OTHER, "Первая запись в БД");
         BankrollItem secondItem = addNewItem(firstItemInDb.getDateTime().plusSeconds(1), 400, 250, GAME);
@@ -94,8 +94,8 @@ public class BankrollResultsTest extends AbstractBankrollTest {
     @Test
     public void getPeriodResult() {
         DatePeriod period = new DatePeriod(of(2017, 5, 10), of(2017, 5, 16));
-        BankrollItem itemBeforePeriod = addNewItem(endOfDay(period.start).minusSeconds(1));
-        BankrollItem lastItemBeforePeriod = addNewItem(endOfDay(period.start), 500, 1000, DEPOSIT);
+        BankrollItem itemBeforePeriod = addNewItem(period.start.minusDays(1).atStartOfDay());
+        BankrollItem lastItemBeforePeriod = addNewItem(endOfDay(period.start.minusDays(1)), 500, 1000, DEPOSIT);
         BankrollItem itemAfterPeriod = addNewItem(period.end.plusDays(1).atStartOfDay(), 10000, 10000, GAME);
 
         BankrollItem item1 = addNewItem(period.start.atStartOfDay(), 510, 1200, GAME);
