@@ -2,7 +2,6 @@ package ru.bender.pokerstatistic.bankroll;
 
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,27 +26,15 @@ class BankrollOfPeriod {
 
     public PeriodResult getPeriodResult() {
         PeriodResult result = new PeriodResult(period);
-        getItemsResults().forEach(result::calculateItemResult);
-        BankrollItem lastPeriodItem = !sortedByDateItems.isEmpty() ?
-                sortedByDateItems.get(sortedByDateItems.size() - 1) : null;
-        result.moneyAtEnd = nonNull(lastPeriodItem) ? lastPeriodItem.getMoney() : initialMoney;
-        result.pointsAtEnd = nonNull(lastPeriodItem) ? lastPeriodItem.getPoints() : initialPoints;
-        return result;
-    }
-
-    public List<ItemResult> getItemsResults() {
-        if (sortedByDateItems.isEmpty()) {
-            return Collections.emptyList();
-        }
-        List<ItemResult> result = new ArrayList<>();
         int previousMoney = initialMoney;
         int previousPoints = initialPoints;
         for (BankrollItem bankrollItem : sortedByDateItems) {
-            result.add(bankrollItem.getItemResult(previousMoney, previousPoints));
+            ItemResult itemResult = bankrollItem.getItemResult(previousMoney, previousPoints);
+            result.add(itemResult);
             previousMoney = bankrollItem.getMoney();
             previousPoints = bankrollItem.getPoints();
         }
-        return result;
+        return result.finalizeCalculation(previousMoney, previousPoints);
     }
 
     public List<BankrollItem> getItems() {

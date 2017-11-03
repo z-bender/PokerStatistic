@@ -1,38 +1,48 @@
 package ru.bender.pokerstatistic.bankroll;
 
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import ru.bender.pokerstatistic.utils.DatePeriod;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Data
+@EqualsAndHashCode(exclude = {"tempItemsResults", "itemsResults"})
 class PeriodResult implements Serializable {
 
-    Integer moneyAtEnd;
-    Integer winning;
-    Integer deposit;
-    Integer bonus;
-    Integer otherChanges;
-    Integer withdrawal;
-    Integer pointsAtEnd;
-    Integer earnedPoints;
-    Integer spentPoints;
-    DatePeriod period;
+    @Setter(AccessLevel.NONE)
+    private DatePeriod period;
+    private Integer moneyAtEnd;
+    private int winning = 0;
+    private int deposit = 0;
+    private int bonus = 0;
+    private int otherChanges = 0;
+    private int withdrawal = 0;
+    private Integer pointsAtEnd;
+    private int earnedPoints = 0;
+    private int spentPoints = 0;
+    private List<ItemResult> itemsResults;
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private List<ItemResult> tempItemsResults;
 
     public PeriodResult(DatePeriod period) {
         this.period = period;
-        this.moneyAtEnd = 0;
-        this.winning = 0;
-        this.deposit = 0;
-        this.bonus = 0;
-        this.otherChanges = 0;
-        this.withdrawal = 0;
-        this.pointsAtEnd = 0;
-        this.earnedPoints = 0;
-        this.spentPoints = 0;
+        tempItemsResults = new ArrayList<>();
     }
 
-    public void calculateItemResult(ItemResult itemResult) {
+    public void add(ItemResult itemResult) {
+        tempItemsResults.add(itemResult);
+        calculateItemResult(itemResult);
+    }
+
+    private void calculateItemResult(ItemResult itemResult) {
         calculateItemMoney(itemResult);
         calculateItemPoints(itemResult);
     }
@@ -65,6 +75,13 @@ class PeriodResult implements Serializable {
         } else {
             spentPoints += -points;
         }
+    }
+
+    public PeriodResult finalizeCalculation(Integer lastMoneyValue, Integer lastPointsValue) {
+        moneyAtEnd = lastMoneyValue;
+        pointsAtEnd = lastPointsValue;
+        itemsResults = Collections.unmodifiableList(tempItemsResults);
+        return this;
     }
 
 }
