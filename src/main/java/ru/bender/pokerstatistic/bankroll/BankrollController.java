@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 
@@ -34,6 +35,17 @@ class BankrollController {
                 newItem.comment
         );
         return service.mapToDto(addedItem);
+    }
+
+    @GetMapping(value = "/getMonthResults")
+    public PeriodResultWithItems getMonthResults(@RequestParam Integer year, @RequestParam Integer month) {
+        return null;
+    }
+
+    // todo: exclude items
+    @GetMapping(value = "/getYearResults")
+    public PeriodResultWithItems getYearResults(@RequestParam Integer year) {
+        return null;
     }
 
     @GetMapping(value = "/getLast")

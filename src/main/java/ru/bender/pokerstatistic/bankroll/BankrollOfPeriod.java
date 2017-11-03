@@ -23,9 +23,8 @@ class BankrollOfPeriod {
         this.initialPoints = nonNull(lastItem) ? lastItem.getPoints() : getFirstItemPoints();
     }
 
-
-    public PeriodResult getPeriodResult() {
-        PeriodResult result = new PeriodResult(period);
+    public PeriodResultWithItems getPeriodResult() {
+        PeriodResultWithItems result = new PeriodResultWithItems(period);
         int previousMoney = initialMoney;
         int previousPoints = initialPoints;
         for (BankrollItem bankrollItem : sortedByDateItems) {
@@ -37,7 +36,7 @@ class BankrollOfPeriod {
         return result.finalizeCalculation(previousMoney, previousPoints);
     }
 
-    public List<BankrollItem> getItems() {
+    List<BankrollItem> getItems() {
         return sortedByDateItems;
     }
 

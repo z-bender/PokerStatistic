@@ -108,7 +108,7 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         BankrollItem item8 = addNewItem(item7.getDateTime().plusSeconds(1), 95, 750, GAME);
         BankrollItem item9 = addNewItem(endOfDay(period.end), 5, 750, WITHDRAWAL);
 
-        PeriodResult expected = new PeriodResult(period);
+        PeriodResultWithItems expected = new PeriodResultWithItems(period);
         expected.setMoneyAtEnd(5);
         expected.setWinning(10 + 1 - 5);
         expected.setDeposit(100 + 50);
@@ -119,7 +119,7 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         expected.setEarnedPoints(200 + 20 + 30);
         expected.setSpentPoints(500);
 
-        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        PeriodResultWithItems actual = service.getBankrollOfPeriod(period).getPeriodResult();
         assertEquals(actual, expected);
     }
 
@@ -130,7 +130,7 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         BankrollItem item2 = addNewItem(firstItemInDb.getDateTime().plusDays(1), 600, 710, GAME);
         BankrollItem item3 = addNewItem(item2.getDateTime().plusDays(1), 300, 710, WITHDRAWAL);
 
-        PeriodResult expected = new PeriodResult(period);
+        PeriodResultWithItems expected = new PeriodResultWithItems(period);
         expected.setMoneyAtEnd(300);
         expected.setWinning(100);
         expected.setDeposit(0);
@@ -141,7 +141,7 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         expected.setEarnedPoints(10);
         expected.setSpentPoints(0);
 
-        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        PeriodResultWithItems actual = service.getBankrollOfPeriod(period).getPeriodResult();
         assertEquals(actual, expected);
     }
 
@@ -152,11 +152,11 @@ public class BankrollResultsTest extends AbstractBankrollTest {
         BankrollItem item2BeforePeriod = addNewItem(endOfDay(period.start.minusDays(1)), 120, 220, GAME);
         BankrollItem itemAfterPeriod = addNewItem(period.end.plusDays(1).atStartOfDay(), 150, 300, GAME);
 
-        PeriodResult expected = new PeriodResult(period);
+        PeriodResultWithItems expected = new PeriodResultWithItems(period);
         expected.setMoneyAtEnd(120);
         expected.setPointsAtEnd(220);
 
-        PeriodResult actual = service.getBankrollOfPeriod(period).getPeriodResult();
+        PeriodResultWithItems actual = service.getBankrollOfPeriod(period).getPeriodResult();
         assertEquals(actual, expected);
     }
 
