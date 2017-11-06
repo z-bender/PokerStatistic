@@ -12,9 +12,7 @@ import java.util.List;
 
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.Objects.nonNull;
-import static ru.bender.pokerstatistic.utils.Utils.currentDate;
-import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
-import static ru.bender.pokerstatistic.utils.Utils.now;
+import static ru.bender.pokerstatistic.utils.Utils.*;
 
 @Service
 @Transactional
@@ -89,6 +87,12 @@ class BankrollServiceImpl implements BankrollService {
         List<BankrollItem> items = dao.findAllByDateTimeBetween(period.start.atStartOfDay(), endOfDay(period.end));
         BankrollItem lastItemBeforePeriod = getLastItemByDate(period.start.minusDays(1));
         return new BankrollOfPeriod(items, lastItemBeforePeriod, period);
+    }
+
+    @Override
+    public PeriodResult getAllPeriodResults() {
+        List<BankrollItem> items = dao.findAll();
+        return new BankrollOfPeriod(items, null, null).getPeriodResult();
     }
 
     @Override

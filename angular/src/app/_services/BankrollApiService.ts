@@ -48,4 +48,9 @@ export class BankrollApiService extends AbstractApiService {
     return result;
   }
 
+  getAllPeriodResults(): Observable<PeriodResults> {
+    const url: string = this.bankrollApiUrl + '/getAllPeriodResults';
+    return this.getWithoutParams(url).map(this.getPeriodResultsFromApiResponse);
+  }
+
 }
