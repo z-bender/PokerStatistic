@@ -12,7 +12,9 @@ import java.util.List;
 
 import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.Objects.nonNull;
-import static ru.bender.pokerstatistic.utils.Utils.*;
+import static ru.bender.pokerstatistic.utils.Utils.currentDate;
+import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
+import static ru.bender.pokerstatistic.utils.Utils.now;
 
 @Service
 @Transactional
