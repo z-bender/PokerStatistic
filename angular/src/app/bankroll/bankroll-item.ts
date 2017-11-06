@@ -1,10 +1,10 @@
 export class BankrollItem {
-  public id: number;
-  public dateTime: Date;
+  id: number;
+  dateTime: Date;
   money: number;
-  public points: number;
-  public type: ItemType;
-  public comment: string;
+  points: number;
+  type: ItemType;
+  comment: string;
 }
 
 export enum ItemType {

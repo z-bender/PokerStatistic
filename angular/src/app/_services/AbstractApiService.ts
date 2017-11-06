@@ -1,4 +1,4 @@
-import {Headers, Http, RequestOptions, Response} from '@angular/http';
+import {Headers, Http, RequestOptions, Response, URLSearchParams} from '@angular/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {ErrorObservable} from 'rxjs/observable/ErrorObservable';
@@ -10,10 +10,14 @@ export class AbstractApiService {
   constructor(private http: Http) {
   }
 
-  get(url: string) {
+  get(url: string, params: URLSearchParams) {
     const headers = new Headers({'Content-Type': 'application/json'});
-    const options = new RequestOptions({headers: headers});
+    const options = new RequestOptions({headers: headers, params: params});
     return this.http.get(url, options);
+  }
+
+  getWithoutParams(url: string) {
+    return this.get(url, null);
   }
 
   post(url: string, bodyObject) {

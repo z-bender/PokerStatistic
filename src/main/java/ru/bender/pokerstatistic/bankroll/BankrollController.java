@@ -39,12 +39,17 @@ class BankrollController {
 
     @GetMapping(value = "/getMonthResults")
     public PeriodResultWithItems getMonthResults(@RequestParam Integer year, @RequestParam Integer month) {
-        return null;
+        return service.getMonthResults(year, month);
     }
 
     // todo: exclude items
+    // todo: year results structure
     @GetMapping(value = "/getYearResults")
     public PeriodResultWithItems getYearResults(@RequestParam Integer year) {
+        return null;
+    }
+
+    public PeriodResult getAllPeriodResults() {
         return null;
     }
 

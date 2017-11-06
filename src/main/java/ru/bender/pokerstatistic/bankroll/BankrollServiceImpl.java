@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.Objects.nonNull;
 import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
@@ -74,6 +75,13 @@ class BankrollServiceImpl implements BankrollService {
         if (nonNull(lastItem) && lastItem.getDateTime().toLocalDate().isAfter(date)) {
             throw new ExistFutureItemException(date, lastItem);
         }
+    }
+
+    @Override
+    public PeriodResultWithItems getMonthResults(Integer year, Integer month) {
+        LocalDate firstDay = LocalDate.of(year, month, 1);
+        DatePeriod period = new DatePeriod(firstDay, firstDay.with(lastDayOfMonth()));
+        return getBankrollOfPeriod(period).getPeriodResult();
     }
 
     @Override

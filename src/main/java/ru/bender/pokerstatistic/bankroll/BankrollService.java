@@ -13,6 +13,8 @@ interface BankrollService {
     BankrollItem addItem(LocalDate date, int money, int points, Type type, String comment)
     throws ExistFutureItemException, AddItemInFutureException;
 
+    PeriodResultWithItems getMonthResults(Integer year, Integer month);
+
     BankrollOfPeriod getBankrollOfPeriod(DatePeriod period);
 
     BankrollItem getLastItemByDate(LocalDate date);
