@@ -1,23 +1,19 @@
-import {Component, OnInit} from "@angular/core";
+import {Component} from "@angular/core";
 import {PeriodResults} from "../period-results";
-import {BankrollApiService} from "../../_services/BankrollApiService";
+import {BankrollApiService} from "../../../_services/BankrollApiService";
 
 @Component({
   moduleId: module.id,
   selector: 'app-month-results',
   templateUrl: 'month-results.component.html'
 })
-export class MonthResultsComponent implements OnInit{
+export class MonthResultsComponent {
 
   monthResults: PeriodResults;
   year: number;
   month: number;
 
   constructor(private bankrollApiService: BankrollApiService) {
-  }
-
-  ngOnInit() {
-    console.log('ngInit')
   }
 
   updatePeriod(): void {

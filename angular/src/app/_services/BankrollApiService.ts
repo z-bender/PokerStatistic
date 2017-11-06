@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {BankrollItem} from '../bankroll/bankroll-item';
-import {AbstractApiService} from './AbstractApiService';
-import {Response, URLSearchParams} from '@angular/http';
-import {Observable} from 'rxjs/Observable';
-import {PeriodResults} from "../bankroll/period-results";
+import {Injectable} from "@angular/core";
+import {BankrollItem} from "../bankroll/bankroll-item";
+import {AbstractApiService} from "./AbstractApiService";
+import {Response, URLSearchParams} from "@angular/http";
+import {Observable} from "rxjs/Observable";
+import {PeriodResults} from "../bankroll/results/period-results";
 
 @Injectable()
 export class BankrollApiService extends AbstractApiService {
@@ -43,7 +43,6 @@ export class BankrollApiService extends AbstractApiService {
     return this.get(url, params).map(this.getPeriodResultsFromApiResponse);
   }
 
-  // todo: universal (with generic)
   private getPeriodResultsFromApiResponse(response: Response): PeriodResults {
     const result: PeriodResults = response.json();
     return result;
