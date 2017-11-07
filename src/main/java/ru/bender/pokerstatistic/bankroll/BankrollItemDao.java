@@ -13,4 +13,6 @@ interface BankrollItemDao extends JpaRepository<BankrollItem, Integer> {
 
     List<BankrollItem> findAllByDateTimeBetween(LocalDateTime start, LocalDateTime end);
 
+    List<BankrollItem> findAllByOrderByDateTime();
+
 }

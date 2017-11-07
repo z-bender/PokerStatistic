@@ -1,14 +1,17 @@
 import {Component, OnInit} from '@angular/core';
-import {PeriodResults} from '../period-results';
 import {BankrollApiService} from '../../../_services/BankrollApiService';
+import {ParentChildPeriodResults} from '../ParentChildPeriodResults';
 
 @Component({
   moduleId: module.id,
   selector: 'all-period-results',
-  template: '<app-results-table *ngIf="results" [resultsArray]="[results]"></app-results-table>'
+  template: `
+    <app-results-table *ngIf="results" [resultsArray]="[results.parent]"></app-results-table>
+    <app-results-table *ngIf="results" [resultsArray]="results.child"></app-results-table>
+  `
 })
 export class AllPeriodResultsComponent implements OnInit {
-  results: PeriodResults;
+  results: ParentChildPeriodResults;
 
   constructor(private bankrollApiService: BankrollApiService) {
   }

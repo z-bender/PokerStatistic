@@ -1,7 +1,5 @@
-import {DatePeriod} from "./date-period";
-
 export class PeriodResults {
-  period: DatePeriod;
+  periodName: string;
   moneyAtEnd: number;
   winning: number;
   deposit: number;

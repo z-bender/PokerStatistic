@@ -8,9 +8,9 @@ import ru.bender.pokerstatistic.utils.DatePeriod;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
 import static java.util.Objects.nonNull;
 import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.endOfDay;
@@ -79,9 +79,7 @@ class BankrollServiceImpl implements BankrollService {
 
     @Override
     public PeriodResultWithItems getMonthResults(Integer year, Integer month) {
-        LocalDate firstDay = LocalDate.of(year, month, 1);
-        DatePeriod period = new DatePeriod(firstDay, firstDay.with(lastDayOfMonth()));
-        return getBankrollOfPeriod(period).getPeriodResult();
+        return getBankrollOfPeriod(DatePeriod.ofMonth(year, month)).getPeriodResult();
     }
 
     @Override
@@ -91,10 +89,24 @@ class BankrollServiceImpl implements BankrollService {
         return new BankrollOfPeriod(items, lastItemBeforePeriod, period);
     }
 
+    private PeriodResult getYearResults(Integer year) {
+        return getBankrollOfPeriod(DatePeriod.ofYear(year)).getPeriodResult();
+    }
+
     @Override
-    public PeriodResult getAllPeriodResults() {
-        List<BankrollItem> items = dao.findAll();
-        return new BankrollOfPeriod(items, null, null).getPeriodResult();
+    public ParentChildPeriodResults getAllPeriodResults() {
+        List<BankrollItem> items = dao.findAllByOrderByDateTime();
+        PeriodResultWithItems allPeriodResult = new BankrollOfPeriod(items, null, null).getPeriodResult();
+        allPeriodResult.setPeriodName("All time");
+        List<PeriodResult> childResults = new ArrayList<>();
+        if (!items.isEmpty()) {
+            int firstYear = items.get(0).getDateTime().getYear();
+            int lastYear = items.get(items.size() - 1).getDateTime().getYear();
+            for (int year = firstYear; year <= lastYear; year++) {
+                childResults.add(getYearResults(year).setYearToPeriodName());
+            }
+        }
+        return new ParentChildPeriodResults(allPeriodResult, childResults);
     }
 
     @Override
