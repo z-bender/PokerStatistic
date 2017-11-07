@@ -1,22 +1,23 @@
-import {NgModule} from "@angular/core";
+import {NgModule} from '@angular/core';
 import {
   AddItemComponent,
+  AllPeriodResultsComponent,
   BankrollComponent,
   BankrollItem,
   MonthResultsComponent,
-  ResultsItemComponent,
-  AllPeriodResultsComponent
-} from "./index";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpModule} from "@angular/http";
-import {BankrollApiService} from "../_services/BankrollApiService";
-import {AbstractApiService} from "../_services/AbstractApiService";
-import {CommonModule, DatePipe} from "@angular/common";
-import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-import {NgbDateParserFormatter} from "../_services/NgbDateParserFormatter";
+  ResultsTableComponent
+} from './index';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpModule} from '@angular/http';
+import {BankrollApiService} from '../_services/BankrollApiService';
+import {AbstractApiService} from '../_services/AbstractApiService';
+import {CommonModule, DatePipe} from '@angular/common';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateParserFormatter} from '../_services/NgbDateParserFormatter';
 
 @NgModule({
-  declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent, ResultsItemComponent, AllPeriodResultsComponent],
+  declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent,
+    AllPeriodResultsComponent, ResultsTableComponent],
   providers: [BankrollItem, BankrollApiService, AbstractApiService, DatePipe, NgbDateParserFormatter],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
 })

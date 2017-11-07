@@ -1,11 +1,11 @@
-import {Component, OnInit} from "@angular/core";
-import {PeriodResults} from "../period-results";
-import {BankrollApiService} from "../../../_services/BankrollApiService";
+import {Component, OnInit} from '@angular/core';
+import {PeriodResults} from '../period-results';
+import {BankrollApiService} from '../../../_services/BankrollApiService';
 
 @Component({
   moduleId: module.id,
   selector: 'all-period-results',
-  template: '<app-results-item *ngIf="results" [resultsItem]="results"></app-results-item>'
+  template: '<app-results-table *ngIf="results" [resultsArray]="[results]"></app-results-table>'
 })
 export class AllPeriodResultsComponent implements OnInit {
   results: PeriodResults;

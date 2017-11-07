@@ -1,4 +1,3 @@
-<!-- todo: exclude Header/footer -->
 <table>
   <tr>
     <th>Период</th>
@@ -12,7 +11,7 @@
     <th>Деньги</th>
     <th>Очки</th>
   </tr>
-  <tr>
+  <tr *ngFor="let resultsItem of resultsArray">
     <td>{{resultsItem.period}}</td>
     <td>{{resultsItem.winning}}</td>
     <td>{{resultsItem.bonus}}</td>
