@@ -43,15 +43,14 @@ class BankrollController {
     }
 
     // todo: exclude items
-    // todo: year results structure
     @GetMapping(value = "/getYearResults")
-    public PeriodResultWithItems getYearResults(@RequestParam Integer year) {
-        return null;
+    public ParentChildPeriodResults getYearResults(@RequestParam Integer year) {
+        return service.getYearWithChildResults(year);
     }
 
     @GetMapping(value = "/getAllPeriodResults")
     public ParentChildPeriodResults getAllPeriodResults() {
-        return service.getAllPeriodResults();
+        return service.getAllPeriodWithChildResults();
     }
 
     @GetMapping(value = "/getLast")

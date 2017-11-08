@@ -1,6 +1,8 @@
 package ru.bender.pokerstatistic.bankroll;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bender.pokerstatistic.utils.DatePeriod;
@@ -20,6 +22,8 @@ import static ru.bender.pokerstatistic.utils.Utils.now;
 @Transactional
 class BankrollServiceImpl implements BankrollService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(BankrollServiceImpl.class);
+
     private final BankrollItemDao dao;
     private final ModelMapper mapper;
 
@@ -32,6 +36,7 @@ class BankrollServiceImpl implements BankrollService {
     private BankrollItem saveNewItem(LocalDateTime itemDateTime, int money, int points,
                                      BankrollItem.Type type, String comment) {
         final BankrollItem newItem = BankrollItem.newItem(itemDateTime, money, points, type, comment);
+        LOG.debug("Add new item - " + newItem);
         return dao.save(newItem);
     }
 
@@ -89,24 +94,34 @@ class BankrollServiceImpl implements BankrollService {
         return new BankrollOfPeriod(items, lastItemBeforePeriod, period);
     }
 
+    @Override
+    public ParentChildPeriodResults getYearWithChildResults(Integer year) {
+        PeriodResult yearResults = getYearResults(year);
+        List<PeriodResult> monthsResults = new ArrayList<>();
+        for (int month = 1; month <= 12; month++) {
+            monthsResults.add(getMonthResults(year, month).setMonthToPeriodName());
+        }
+        return new ParentChildPeriodResults(yearResults, monthsResults);
+    }
+
     private PeriodResult getYearResults(Integer year) {
         return getBankrollOfPeriod(DatePeriod.ofYear(year)).getPeriodResult();
     }
 
     @Override
-    public ParentChildPeriodResults getAllPeriodResults() {
+    public ParentChildPeriodResults getAllPeriodWithChildResults() {
         List<BankrollItem> items = dao.findAllByOrderByDateTime();
         PeriodResultWithItems allPeriodResult = new BankrollOfPeriod(items, null, null).getPeriodResult();
         allPeriodResult.setPeriodName("All time");
-        List<PeriodResult> childResults = new ArrayList<>();
+        List<PeriodResult> yearsResults = new ArrayList<>();
         if (!items.isEmpty()) {
             int firstYear = items.get(0).getDateTime().getYear();
             int lastYear = items.get(items.size() - 1).getDateTime().getYear();
             for (int year = firstYear; year <= lastYear; year++) {
-                childResults.add(getYearResults(year).setYearToPeriodName());
+                yearsResults.add(getYearResults(year).setYearToPeriodName());
             }
         }
-        return new ParentChildPeriodResults(allPeriodResult, childResults);
+        return new ParentChildPeriodResults(allPeriodResult, yearsResults);
     }
 
     @Override

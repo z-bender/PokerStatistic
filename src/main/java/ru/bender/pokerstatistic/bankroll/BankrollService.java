@@ -17,7 +17,9 @@ interface BankrollService {
 
     BankrollOfPeriod getBankrollOfPeriod(DatePeriod period);
 
-    ParentChildPeriodResults getAllPeriodResults();
+    ParentChildPeriodResults getYearWithChildResults(Integer year);
+
+    ParentChildPeriodResults getAllPeriodWithChildResults();
 
     BankrollItem getLastItemByDate(LocalDate date);
 

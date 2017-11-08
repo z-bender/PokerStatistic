@@ -5,7 +5,8 @@ import {
   BankrollComponent,
   BankrollItem,
   MonthResultsComponent,
-  ResultsTableComponent
+  ResultsTableComponent,
+  YearResultsComponent
 } from './index';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
@@ -17,7 +18,7 @@ import {NgbDateParserFormatter} from '../_services/NgbDateParserFormatter';
 
 @NgModule({
   declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent,
-    AllPeriodResultsComponent, ResultsTableComponent],
+    AllPeriodResultsComponent, ResultsTableComponent, YearResultsComponent],
   providers: [BankrollItem, BankrollApiService, AbstractApiService, DatePipe, NgbDateParserFormatter],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
 })

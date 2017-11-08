@@ -38,6 +38,7 @@ export class BankrollApiService extends AbstractApiService {
 
   getMonthResults(year: number, month: number): Observable<PeriodResults> {
     const url: string = this.bankrollApiUrl + '/getMonthResults';
+    // todo: DRY
     const params = new URLSearchParams();
     params.set("year", year.toString());
     params.set("month", month.toString());
@@ -58,5 +59,14 @@ export class BankrollApiService extends AbstractApiService {
     const url: string = this.bankrollApiUrl + '/getAllPeriodResults';
     return this.getWithoutParams(url).map(this.getParentChildResultsFromApiResponse);
   }
+
+  getYearResults(year: number): Observable<ParentChildPeriodResults> {
+    const url: string = this.bankrollApiUrl + '/getYearResults';
+    // todo: DRY
+    const params = new URLSearchParams();
+    params.set("year", year.toString());
+    return this.get(url, params).map(this.getParentChildResultsFromApiResponse);
+  }
+
 
 }
