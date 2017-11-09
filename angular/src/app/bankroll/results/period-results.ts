@@ -1,3 +1,4 @@
+import {ItemResult} from './ItemResult';
 export class PeriodResults {
   periodName: string;
   moneyAtEnd: number;
@@ -9,4 +10,5 @@ export class PeriodResults {
   pointsAtEnd: number;
   earnedPoints: number;
   spentPoints: number;
+  itemsResults: ItemResult[];
 }
