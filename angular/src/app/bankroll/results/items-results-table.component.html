@@ -1,0 +1,16 @@
+<table>
+  <tr>
+    <th>Дата</th>
+    <th>Деньги</th>
+    <th>Очки</th>
+    <th>Тип</th>
+    <th>Коммент</th>
+  </tr>
+  <tr *ngFor="let itemResult of itemsResults">
+    <td>{{itemResult.date}}</td>
+    <td>{{itemResult.moneyDifference}}</td>
+    <td>{{itemResult.pointsDifference}}</td>
+    <td>{{itemResult.type}}</td>
+    <td>{{itemResult.comment}}</td>
+  </tr>
+</table>

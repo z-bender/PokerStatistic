@@ -4,6 +4,7 @@ import {
   AllPeriodResultsComponent,
   BankrollComponent,
   BankrollItem,
+  ItemsResultsTableComponent,
   MonthResultsComponent,
   ResultsTableComponent,
   YearResultsComponent
@@ -17,7 +18,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {NgbDateParserFormatter} from '../_services/NgbDateParserFormatter';
 
 @NgModule({
-  declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent,
+  declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent, ItemsResultsTableComponent,
     AllPeriodResultsComponent, ResultsTableComponent, YearResultsComponent],
   providers: [BankrollItem, BankrollApiService, AbstractApiService, DatePipe, NgbDateParserFormatter],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
