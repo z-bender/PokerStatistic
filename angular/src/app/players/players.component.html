@@ -1,6 +1,0 @@
-<h3>Игроки</h3>
-<ul>
-  <li *ngFor="let player of players" (click)="onSelect(player)" [class.active]="isSelected(player)">{{player.name}}</li>
-</ul>
-
-<router-outlet></router-outlet>
