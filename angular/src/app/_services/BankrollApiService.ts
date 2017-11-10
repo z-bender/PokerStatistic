@@ -3,7 +3,7 @@ import {BankrollItem} from '../bankroll/bankroll-item';
 import {AbstractApiService} from './AbstractApiService';
 import {Response, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
-import {PeriodResults} from '../bankroll/results/period-results';
+import {PeriodResults} from '../bankroll/results/PeriodResults';
 import {ParentChildPeriodResults} from '../bankroll/results/ParentChildPeriodResults';
 
 @Injectable()

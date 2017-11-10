@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {PeriodResults} from '../period-results';
+import {PeriodResults} from '../PeriodResults';
 import {BankrollApiService} from '../../../_services/BankrollApiService';
 
 @Component({

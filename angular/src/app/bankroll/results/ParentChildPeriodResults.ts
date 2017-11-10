@@ -1,4 +1,4 @@
-import {PeriodResults} from './period-results';
+import {PeriodResults} from './PeriodResults';
 
 export class ParentChildPeriodResults {
   parent: PeriodResults;

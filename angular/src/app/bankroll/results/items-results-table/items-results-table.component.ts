@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {ItemResult} from './ItemResult';
+import {ItemResult} from '../ItemResult';
 
 @Component({
   moduleId: module.id,
