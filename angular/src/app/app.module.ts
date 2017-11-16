@@ -5,6 +5,7 @@ import {HttpModule} from '@angular/http';
 import {AppRoutingModule} from './app-routing.module';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {AppComponent, BankrollModule} from './index';
+import {DateParserFormatter} from './_services/DateParserFormatter';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,7 @@ import {AppComponent, BankrollModule} from './index';
     AppRoutingModule,
     NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [DateParserFormatter],
   bootstrap: [AppComponent],
 })
 export class AppModule {

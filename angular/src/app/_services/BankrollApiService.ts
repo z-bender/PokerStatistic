@@ -1,18 +1,23 @@
-import {Injectable} from '@angular/core';
+import {Injectable, ReflectiveInjector} from '@angular/core';
 import {BankrollItem} from '../bankroll/bankroll-item';
 import {AbstractApiService} from './AbstractApiService';
 import {Response, URLSearchParams} from '@angular/http';
 import {Observable} from 'rxjs/Observable';
 import {PeriodResults} from '../bankroll/results/PeriodResults';
 import {ParentChildPeriodResults} from '../bankroll/results/ParentChildPeriodResults';
+import {DatePeriod} from '../bankroll/results/DatePeriod';
+import {DateParserFormatter} from './DateParserFormatter';
 
 @Injectable()
 export class BankrollApiService extends AbstractApiService {
 
   private bankrollApiUrl = this.apiUrl + '/bankroll';
+  private dateParser: DateParserFormatter;
 
   add(item: BankrollItem): Observable<BankrollItem> {
     const url: string = this.bankrollApiUrl + '/add';
+    console.log('Add item');
+    console.log(item);
     return this.post(url, item)
       .map(response => this.getBankrollItemFromApiResponse(response))
       .catch(this.handleError);
@@ -68,5 +73,23 @@ export class BankrollApiService extends AbstractApiService {
     return this.get(url, params).map(this.getParentChildResultsFromApiResponse);
   }
 
+  getStatisticPeriod(): Observable<DatePeriod> {
+    const url: string = this.bankrollApiUrl + '/getStatisticsPeriod';
+    return this.getWithoutParams(url).map(this.getDatePeriodFromApiResponse);
+  }
+
+  private getDatePeriodFromApiResponse(response: Response): DatePeriod {
+    let startLocalDate: number[] = response.json().start;
+    let endLocalDate: number[] = response.json().end;
+    let result: DatePeriod = new DatePeriod();
+    // fixme: DateParserFormatter didn't autowiring in initialization of BankrollApiService
+    if(this.dateParser == null) {
+      const injector = ReflectiveInjector.resolveAndCreate([DateParserFormatter]);
+      this.dateParser = injector.get(DateParserFormatter);
+    }
+    result.start = this.dateParser.getDateFromApiLocalDate(startLocalDate);
+    result.end = this.dateParser.getDateFromApiLocalDate(endLocalDate);
+    return result;
+  }
 
 }

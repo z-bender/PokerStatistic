@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
-
-import java.time.LocalDate;
+import ru.bender.pokerstatistic.utils.DatePeriod;
 
 @RestController
 @CrossOrigin
@@ -58,10 +57,9 @@ class BankrollController {
         return service.mapToDto(service.getLastItem());
     }
 
-    // todo: лишний метод?
-    @GetMapping(value = "/getLastByDate")
-    public BankrollItemDto getLastByDate(LocalDate date) {
-        return service.mapToDto(service.getLastItemByDate(date));
+    @GetMapping(value = "/getStatisticsPeriod")
+    public DatePeriod getStatisticsPeriod() {
+        return service.getStatisticsPeriod();
     }
 
 }

@@ -3,7 +3,6 @@ import {
   AddItemComponent,
   AllPeriodResultsComponent,
   BankrollComponent,
-  BankrollItem,
   ItemsResultsTableComponent,
   MonthResultsComponent,
   ResultsTableComponent,
@@ -13,14 +12,14 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {BankrollApiService} from '../_services/BankrollApiService';
 import {AbstractApiService} from '../_services/AbstractApiService';
-import {CommonModule, DatePipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateParserFormatter} from '../_services/NgbDateParserFormatter';
+import {SettingsService} from '../_services/SettingsService';
 
 @NgModule({
   declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent, ItemsResultsTableComponent,
     AllPeriodResultsComponent, ResultsTableComponent, YearResultsComponent],
-  providers: [BankrollItem, BankrollApiService, AbstractApiService, DatePipe, NgbDateParserFormatter],
+  providers: [BankrollApiService, AbstractApiService, SettingsService],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
 })
 export class BankrollModule {

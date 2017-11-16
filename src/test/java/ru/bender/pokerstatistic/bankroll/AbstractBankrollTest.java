@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.bender.pokerstatistic.bankroll.BankrollItem.Type;
 import ru.bender.pokerstatistic.testing.AbstractTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static ru.bender.pokerstatistic.bankroll.BankrollItem.Type.GAME;
@@ -29,6 +30,10 @@ abstract public class AbstractBankrollTest extends AbstractTest {
 
     protected BankrollItem addNewItem(LocalDateTime dateTime) {
         return addNewItem(dateTime, IRRELEVANT_VALUE, IRRELEVANT_VALUE, GAME);
+    }
+
+    protected BankrollItem addNewItem(LocalDate date) {
+        return addNewItem(date.atTime(12, 0));
     }
 
 }

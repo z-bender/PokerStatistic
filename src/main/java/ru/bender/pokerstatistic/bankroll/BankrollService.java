@@ -27,4 +27,6 @@ interface BankrollService {
 
     BankrollItemDto mapToDto(BankrollItem item);
 
+    DatePeriod getStatisticsPeriod();
+
 }

@@ -1,26 +1,34 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BankrollApiService} from '../../../_services/BankrollApiService';
 import {ParentChildPeriodResults} from '../ParentChildPeriodResults';
+import {SettingsService} from '../../../_services/SettingsService';
 
 @Component({
   moduleId: module.id,
   selector: 'year-results',
   template: `
-    <input id="year" class="form-control" [(ngModel)]="year" (change)="getResults()" />
+    <select #yearSelect class="form-control" (change)="getResults(yearSelect.value)">
+      <option disabled hidden>-- select year --</option>
+      <option *ngFor="let year of years" [value]="year" [label]="year"></option>
+    </select>
     <app-results-table *ngIf="results" [resultsArray]="[results.parent]"></app-results-table>
     <app-results-table *ngIf="results" [resultsArray]="results.child"></app-results-table>
   `
 })
 // todo: объеденить с AllPeriodResults?
-export class YearResultsComponent {
+export class YearResultsComponent implements OnInit {
   results: ParentChildPeriodResults;
-  year: number;
+  years: number[] = [];
 
-  constructor(private bankrollApiService: BankrollApiService) {
+  constructor(private bankrollApiService: BankrollApiService, private settingsService: SettingsService) {
   }
 
-  getResults() {
-    this.bankrollApiService.getYearResults(this.year)
+  ngOnInit() {
+    this.settingsService.fillYearsOfStatistic(this.years);
+  }
+
+  getResults(year: number) {
+    this.bankrollApiService.getYearResults(year)
       .subscribe(result => {
         this.results = result;
         console.log(result);

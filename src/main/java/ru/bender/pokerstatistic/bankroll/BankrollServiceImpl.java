@@ -138,4 +138,15 @@ class BankrollServiceImpl implements BankrollService {
     public BankrollItemDto mapToDto(BankrollItem item) {
         return mapper.map(item, BankrollItemDto.class);
     }
+
+    @Override
+    public DatePeriod getStatisticsPeriod() {
+        return getPeriodBySortedItems(dao.findAllByOrderByDateTime());
+    }
+
+    private DatePeriod getPeriodBySortedItems(List<BankrollItem> sortedByDateItems) {
+        LocalDate start = sortedByDateItems.get(0).getDateTime().toLocalDate();
+        LocalDate end = sortedByDateItems.get(sortedByDateItems.size() - 1).getDateTime().toLocalDate();
+        return new DatePeriod(start, end);
+    }
 }

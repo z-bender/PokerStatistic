@@ -52,7 +52,7 @@ public class BankrollServiceTest extends AbstractBankrollTest {
         final int money = 300;
         final int points = 400;
         final Type type = DEPOSIT;
-        final String comment = "Just comment";
+        final String comment = "comment";
 
         BankrollItem newItem = service.addItem(date, money, points, type, comment);
 
@@ -166,6 +166,22 @@ public class BankrollServiceTest extends AbstractBankrollTest {
 
     private void assertDateTimeInFiveSecondsFromNow(BankrollItem newItem) {
         assertThat(ChronoUnit.SECONDS.between(newItem.getDateTime(), LocalDateTime.now()), lessThan(5L));
+    }
+
+    @Test
+    public void getStatisticsPeriod() {
+        LocalDate start = of(2013, 10, 1);
+        LocalDate end = of(2017, 6, 6);
+        addNewItem(start.plusYears(2));
+        addNewItem(start.plusYears(2).plusDays(5));
+        addNewItem(start);
+        addNewItem(start.plusYears(2).plusDays(6));
+        addNewItem(end);
+        addNewItem(end.minusYears(1).minusMonths(1));
+
+        DatePeriod expected = new DatePeriod(start, end);
+        DatePeriod actual = service.getStatisticsPeriod();
+        assertEquals(actual, expected);
     }
 
 }

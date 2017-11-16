@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BankrollItem, ItemType, ItemTypeTranslator} from '../bankroll-item';
 import {BankrollApiService} from '../../_services/BankrollApiService';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NgbDateParserFormatter} from '../../_services/NgbDateParserFormatter';
+import {DateParserFormatter} from '../../_services/DateParserFormatter';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker.module';
 
 @Component({
@@ -24,7 +24,7 @@ export class AddItemComponent implements OnInit {
 
   constructor(private bankrollService: BankrollApiService,
               private formBuilder: FormBuilder,
-              private ngbDateParser:NgbDateParserFormatter) {
+              private dateParser:DateParserFormatter) {
     this.itemTypes = Object.keys(ItemType);
   }
 
@@ -40,7 +40,7 @@ export class AddItemComponent implements OnInit {
   }
 
   add(): void {
-    this.bankrollItem.dateTime = this.ngbDateParser.toDate(this.datepickerValue);
+    this.bankrollItem.dateTime = this.dateParser.getDateFromNgbDate(this.datepickerValue);
     this.bankrollService.add(this.bankrollItem).subscribe(lastItem => this.updateLastItem(lastItem));
   }
 
@@ -72,7 +72,7 @@ export class AddItemComponent implements OnInit {
       itemType: ['', Validators.required],
       comment: [''],
     });
-    this.datepickerValue = this.ngbDateParser.fromDate(new Date())
+    this.datepickerValue = this.dateParser.getNgbDateFromDate(new Date())
   }
 
 }
