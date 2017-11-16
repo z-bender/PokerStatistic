@@ -7,5 +7,5 @@ import './rx-js.operators.ts';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Статистика';
+  title = 'Statistic';
 }

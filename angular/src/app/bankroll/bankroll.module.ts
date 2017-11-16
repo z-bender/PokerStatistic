@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {
   AddItemComponent,
   AllPeriodResultsComponent,
-  BankrollComponent,
   ItemsResultsTableComponent,
   MonthResultsComponent,
   ResultsTableComponent,
@@ -17,7 +16,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {SettingsService} from '../_services/SettingsService';
 
 @NgModule({
-  declarations: [BankrollComponent, AddItemComponent, MonthResultsComponent, ItemsResultsTableComponent,
+  declarations: [AddItemComponent, MonthResultsComponent, ItemsResultsTableComponent,
     AllPeriodResultsComponent, ResultsTableComponent, YearResultsComponent],
   providers: [BankrollApiService, AbstractApiService, SettingsService],
   imports: [FormsModule, HttpModule, ReactiveFormsModule, CommonModule, NgbModule]
