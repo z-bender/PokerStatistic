@@ -8,8 +8,11 @@ import org.springframework.stereotype.Component;
 import ru.bender.pokerstatistic.utils.archiver.ArchiveException;
 import ru.bender.pokerstatistic.utils.archiver.Archiver;
 
+import java.time.LocalDateTime;
+
 import static java.time.format.DateTimeFormatter.BASIC_ISO_DATE;
 import static ru.bender.pokerstatistic.utils.Utils.currentDate;
+import static ru.bender.pokerstatistic.utils.Utils.now;
 
 // TODO: 16.01.19 spring batch?
 @Component
@@ -18,7 +21,9 @@ class BackupTask {
     private static final Logger LOG = LoggerFactory.getLogger(BackupTask.class);
     private static final String BACKUP_FOLDER_PATH = "db/backups/";
     private static final String BACKUP_TEMP_FILE_PATH = BACKUP_FOLDER_PATH + "backup.sql";
+    private static final String ARCHIVE_NAME_PREFIX = "db";
     private static final int FIVE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 24 * 5;
+    private static final int MIN_DAYS_COUNT_BETWEEN_BACKUPS = 4;
 
     private final BackupDao backupDao;
     private final Archiver archiver;
@@ -30,16 +35,14 @@ class BackupTask {
     }
 
     /**
-     * TODO: запускаем таску при старте приложения и раз в пару дней
-     * если прошлый бэкап был сделан менее суток назад, то таску не выполняем
-     * в БД храним время записи, имя файла
-     * <p>
      * // TODO: 16.01.19 прирвется ли поток при эксепшене?
      */
     @Scheduled(fixedDelay = FIVE_DAY_IN_MILLISECONDS)
     public void run() {
         LOG.debug("Start backup task");
-        // TODO: 17.01.19 check last backup for 4 days
+        if (isNotTimeForNewBackup()) {
+            return;
+        }
         backupDao.backup(BACKUP_TEMP_FILE_PATH);
         LOG.debug("Backup saved to temp file");
         try {
@@ -49,6 +52,21 @@ class BackupTask {
         } catch (ArchiveException e) {
             LOG.error("Failed to create backup archive", e);
         }
+    }
+
+    private boolean isNotTimeForNewBackup() {
+        BackupItem recentBackup = backupDao
+                .findFirstByDateTimeAfterOrderByDateTimeDesc(maxDateTimeOfRecentBackup());
+        if (recentBackup == null) {
+            return false;
+        } else {
+            LOG.debug("To small time since last backup - " + recentBackup);
+            return true;
+        }
+    }
+
+    private LocalDateTime maxDateTimeOfRecentBackup() {
+        return now().minusDays(MIN_DAYS_COUNT_BETWEEN_BACKUPS);
     }
 
     private String getArchiveFilePath() {
@@ -61,7 +79,7 @@ class BackupTask {
 
     private String generateArchiveName() {
         String currentDateString = currentDate().format(BASIC_ISO_DATE);
-        return "db" + currentDateString;
+        return ARCHIVE_NAME_PREFIX + currentDateString;
     }
 
 }

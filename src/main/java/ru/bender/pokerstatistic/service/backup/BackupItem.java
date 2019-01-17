@@ -15,6 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
 @Entity
+// TODO: 18.01.19 rename (name may be reserved)
 @Table(name = "backup")
 @Data
 class BackupItem implements Serializable {
@@ -28,7 +29,6 @@ class BackupItem implements Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
-    // TODO: 12.01.19 autogenerate date
     @Column(nullable = false)
     private LocalDateTime dateTime;
     @Column(nullable = false)
