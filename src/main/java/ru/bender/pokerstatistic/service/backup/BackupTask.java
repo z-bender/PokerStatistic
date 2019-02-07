@@ -15,6 +15,7 @@ import static ru.bender.pokerstatistic.utils.Utils.currentDate;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
 // TODO: 16.01.19 spring batch?
+// TODO: 18.01.19 tests
 @Component
 class BackupTask {
 
@@ -35,7 +36,7 @@ class BackupTask {
     }
 
     /**
-     * // TODO: 16.01.19 прирвется ли поток при эксепшене?
+     * // TODO: 16.01.19 прирвется ли поток при эксепшене? проработать глобальную обработку исключений.
      */
     @Scheduled(fixedDelay = FIVE_DAY_IN_MILLISECONDS)
     public void run() {
@@ -70,11 +71,10 @@ class BackupTask {
     }
 
     private String getArchiveFilePath() {
-        StringBuilder result = new StringBuilder(BACKUP_FOLDER_PATH)
-                .append(generateArchiveName())
-                .append(".")
-                .append(archiver.getExtension());
-        return result.toString();
+        return BACKUP_FOLDER_PATH +
+                generateArchiveName() +
+                "." +
+                archiver.getExtension();
     }
 
     private String generateArchiveName() {

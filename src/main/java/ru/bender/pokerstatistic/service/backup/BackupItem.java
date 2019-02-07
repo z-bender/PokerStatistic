@@ -15,8 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 import static ru.bender.pokerstatistic.utils.Utils.now;
 
 @Entity
-// TODO: 18.01.19 rename (name may be reserved)
-@Table(name = "backup")
+@Table(name = "backups")
 @Data
 class BackupItem implements Serializable {
 
@@ -33,7 +32,6 @@ class BackupItem implements Serializable {
     private LocalDateTime dateTime;
     @Column(nullable = false)
     private String filename;
-    // TODO: 12.01.19 deleted flag?
 
     @PrePersist
     public void onPrePersist() {
