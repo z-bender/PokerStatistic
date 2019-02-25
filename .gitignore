@@ -8,6 +8,10 @@
 ## DB directory:
 /db/
 
+## gradle
+.gradle
+/build/
+
 ## Web target
 /src/main/webapp/
 
